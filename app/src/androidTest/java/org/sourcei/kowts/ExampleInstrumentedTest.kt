@@ -1,4 +1,4 @@
-package org.sourcei.kowts_android
+package org.sourcei.kowts
 
 import androidx.test.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4

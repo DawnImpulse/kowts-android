@@ -1,18 +1,17 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.1"
     defaultConfig {
-        applicationId "org.sourcei.kowts_android"
+        applicationId "org.sourcei.kowts"
         minSdkVersion 19
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
+        vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -28,9 +27,19 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.core:core-ktx:1.0.2'
 
+    implementation "com.google.android.material:material:1.0.0"
+
     // ----------------- FIREBASE -----------------------
     
     // ----------------- ADDITIONAL -----------------------
+    implementation 'com.github.bumptech.glide:glide:4.9.0' // image loading
+    implementation 'com.squareup.retrofit2:retrofit:2.6.0' // retrofit
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
+    implementation 'com.jakewharton.rxrelay2:rxrelay:2.1.0' //rx relay
+    implementation 'org.sourcei.android:permissions:1.0.1' //permissions
+    implementation 'co.revely:gradient:1.0.1' // gradient
+    implementation 'jp.wasabeef:blurry:3.0.0' //blur library
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

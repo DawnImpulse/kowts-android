@@ -1,4 +1,4 @@
-package org.sourcei.kowts_android
+package org.sourcei.kowts
 
 import org.junit.Test
 
