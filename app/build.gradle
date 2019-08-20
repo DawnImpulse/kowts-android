@@ -15,7 +15,16 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+
+        debug {
+            buildConfigField "String", "API_URL", "\"${KOWTS_API_DEBUG_URL}\""
+            buildConfigField "String", "API_KEY", "\"${KOWTS_API_DEBUG_KEY}\""
+        }
+
         release {
+            buildConfigField "String", "API_URL", "\"${KOWTS_API_RELEASE_URL}\""
+            buildConfigField "String", "API_KEY", "\"${KOWTS_API_RELEASE_KEY}\""
+
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -30,7 +39,7 @@ dependencies {
     implementation "com.google.android.material:material:1.0.0"
 
     // ----------------- FIREBASE -----------------------
-    
+
     // ----------------- ADDITIONAL -----------------------
     implementation 'com.github.bumptech.glide:glide:4.9.0' // image loading
     implementation 'com.squareup.retrofit2:retrofit:2.6.0' // retrofit
@@ -41,5 +50,5 @@ dependencies {
     implementation 'jp.wasabeef:blurry:3.0.0' //blur library
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
