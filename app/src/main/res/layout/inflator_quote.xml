@@ -17,65 +17,34 @@ OR PERFORMANCE OF THIS SOFTWARE.
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!--Background-->
-    <ImageView
-        android:id="@+id/background"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="32dp">
+        android:layout_margin="32dp"
+        app:cardCornerRadius="8dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <!--Background-->
+            <ImageView
+                android:id="@+id/background"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/app_name"
+                android:scaleType="centerCrop" />
+
             <!--Gradient-->
             <FrameLayout
                 android:id="@+id/gradient"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <!--Quote-->
-            <TextView
-                android:id="@+id/quote"
-                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="32dp"
-                app:autoSizeMaxTextSize="18sp"
-                app:autoSizeTextType="uniform" />
-
-            <!--Author-->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="wrap_content"
-                android:layout_height="24dp"
-                android:layout_alignBottom="@id/quote"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginBottom="24dp"
-                app:cardCornerRadius="8dp">
-
-                <FrameLayout
-                    android:id="@+id/authorLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                <TextView
-                    android:id="@+id/author"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="16dp"
-                    android:paddingTop="4dp"
-                    android:paddingRight="16dp"
-                    android:paddingBottom="4dp"
-                    android:text="Hello World" />
-
-            </com.google.android.material.card.MaterialCardView>
+                android:alpha="0.5" />
 
             <!--Actions-->
             <RelativeLayout
+                android:id="@+id/actions"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_alignParentBottom="true"
@@ -123,6 +92,53 @@ OR PERFORMANCE OF THIS SOFTWARE.
                         app:srcCompat="@drawable/vd_image" />
                 </FrameLayout>
             </RelativeLayout>
+
+            <!--Quote-->
+            <TextView
+                android:id="@+id/quote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="56dp"
+                android:letterSpacing="0.05"
+                android:paddingBottom="32dp"
+                android:text="@string/google"
+                android:textColor="@color/white"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                app:autoSizeTextType="uniform" />
+
+            <!--Author-->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
+                android:layout_alignBottom="@id/quote"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="16dp"
+                app:cardCornerRadius="8dp">
+
+                <FrameLayout
+                    android:id="@+id/authorLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:id="@+id/author"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:letterSpacing="0.05"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:text="Hello World"
+                    android:textColor="@color/white" />
+
+            </com.google.android.material.card.MaterialCardView>
+
         </RelativeLayout>
     </com.google.android.material.card.MaterialCardView>
 </RelativeLayout>

@@ -32,7 +32,7 @@ import retrofit2.http.Header
  */
 interface Source {
 
-    @GET("kowts/v1/quotes/random?limit=1")
+    @GET("v1/quotes/random?limit=1")
     fun randomQuote(
         @Header(X_API_KEY) apiKey: String = BuildConfig.API_KEY
     ): Call<ListQuotes>
