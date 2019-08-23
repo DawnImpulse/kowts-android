@@ -17,6 +17,25 @@ OR PERFORMANCE OF THIS SOFTWARE.
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <!--Blur Layout-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/blurBg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop" />
+
+        <FrameLayout
+            android:id="@+id/blurMask"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0.5" />
+    </RelativeLayout>
+
+    <!--Card View-->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card"
         android:layout_width="match_parent"

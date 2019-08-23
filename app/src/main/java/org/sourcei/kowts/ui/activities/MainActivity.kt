@@ -14,20 +14,21 @@
  **/
 package org.sourcei.kowts.ui.activities
 
+import android.graphics.Bitmap
 import android.graphics.Point
 import android.os.Bundle
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.setMargins
 import co.revely.gradient.RevelyGradient
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
+import jp.wasabeef.blurry.Blurry
 import kotlinx.android.synthetic.main.inflator_quote.*
 import org.sourcei.kowts.R
 import org.sourcei.kowts.ui.Model
 import org.sourcei.kowts.utils.functions.F
 import org.sourcei.kowts.utils.functions.loge
 import org.sourcei.kowts.utils.functions.toast
+import org.sourcei.kowts.utils.handler.ImageHandler
 
 /**
  * @info -
@@ -39,6 +40,7 @@ import org.sourcei.kowts.utils.functions.toast
  * @note Updates :
  */
 class MainActivity : AppCompatActivity() {
+    lateinit var bitmap: Bitmap
 
     // on create
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,8 +57,17 @@ class MainActivity : AppCompatActivity() {
                 toast("error")
             }
             r?.let {
-                Glide.with(this).asBitmap().load("https://source.unsplash.com/random").diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(background)
-                RevelyGradient.linear().colors(F.randomGradient().toIntArray()).onBackgroundOf(gradient)
+                ImageHandler.getBitmap(this) {
+                    if (it != null) {
+                        bitmap = it
+                        background.setImageBitmap(it)
+                        setBackground()
+                    }
+                }
+
+                val colors = F.randomGradient().toIntArray()
+                RevelyGradient.linear().colors(colors).onBackgroundOf(gradient)
+                RevelyGradient.linear().colors(colors).onBackgroundOf(blurMask)
                 RevelyGradient.linear().colors(F.randomGradient().toIntArray()).onBackgroundOf(authorLayout)
                 quote.text = it.quote
                 author.text = it.author
@@ -80,7 +91,16 @@ class MainActivity : AppCompatActivity() {
         // set dimensions for text view
         val paramsT = quote.layoutParams
         val paramsN = RelativeLayout.LayoutParams(paramsT.width, y / 2)
-        paramsN.setMargins(F.dpToPx(16,this))
+        paramsN.setMargins(F.dpToPx(16, this))
         quote.layoutParams = paramsN
+    }
+
+    // set background
+    private fun setBackground(){
+        Blurry.with(this)
+                .async()
+                .sampling(2)
+                .from(bitmap)
+                .into(blurBg)
     }
 }
