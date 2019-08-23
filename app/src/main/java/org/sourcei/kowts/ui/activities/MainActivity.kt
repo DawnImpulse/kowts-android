@@ -14,8 +14,11 @@
  **/
 package org.sourcei.kowts.ui.activities
 
+import android.graphics.Point
 import android.os.Bundle
+import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.setMargins
 import co.revely.gradient.RevelyGradient
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -42,6 +45,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.inflator_quote)
 
+        // get dimensions
+        val point = F.displayDimensions(this)
+        setDimensions(point)
+
         Model(this).getRandomQuote { e, r ->
             e?.let {
                 loge(e)
@@ -55,5 +62,25 @@ class MainActivity : AppCompatActivity() {
                 author.text = it.author
             }
         }
+    }
+
+    // set card & text dimensions
+    private fun setDimensions(point: Point) {
+
+        // set dimensions for card
+        val x = point.x - F.dpToPx(32, this)
+        val y = x + x / 4
+
+        val params = RelativeLayout.LayoutParams(x, y)
+        params.addRule(RelativeLayout.CENTER_HORIZONTAL)
+        params.addRule(RelativeLayout.CENTER_VERTICAL)
+        card.layoutParams = params
+
+
+        // set dimensions for text view
+        val paramsT = quote.layoutParams
+        val paramsN = RelativeLayout.LayoutParams(paramsT.width, y / 2)
+        paramsN.setMargins(F.dpToPx(16,this))
+        quote.layoutParams = paramsN
     }
 }
