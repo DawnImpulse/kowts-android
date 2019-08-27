@@ -17,6 +17,7 @@ package org.sourcei.kowts.ui.activities
 import android.graphics.Bitmap
 import android.graphics.Point
 import android.os.Bundle
+import android.view.Gravity
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.setMargins
@@ -38,6 +39,7 @@ import org.sourcei.kowts.utils.handler.ImageHandler
  *
  * @note Created on 2019-08-20 by Saksham
  * @note Updates :
+ *  Saksham - 2019-08-27 - master - random alignment
  */
 class MainActivity : AppCompatActivity() {
     lateinit var bitmap: Bitmap
@@ -68,7 +70,8 @@ class MainActivity : AppCompatActivity() {
                 val colors = F.randomGradient().toIntArray()
                 RevelyGradient.linear().colors(colors).onBackgroundOf(gradient)
                 RevelyGradient.linear().colors(colors).onBackgroundOf(blurMask)
-                RevelyGradient.linear().colors(F.randomGradient().toIntArray()).onBackgroundOf(authorLayout)
+                RevelyGradient.linear().colors(F.randomGradient().toIntArray())
+                    .onBackgroundOf(authorLayout)
                 quote.text = it.quote
                 author.text = it.author
             }
@@ -88,19 +91,60 @@ class MainActivity : AppCompatActivity() {
         card.layoutParams = params
 
 
-        // set dimensions for text view
-        val paramsT = quote.layoutParams
-        val paramsN = RelativeLayout.LayoutParams(paramsT.width, y / 2)
-        paramsN.setMargins(F.dpToPx(16, this))
-        quote.layoutParams = paramsN
+        // set dimensions for quote & author layout
+
+        // original params
+        val paramsT = quote.layoutParams // original params for quote
+        val paramsA = authorCard.layoutParams // original params for author
+
+        // new params
+        val paramsNQ = RelativeLayout.LayoutParams(paramsT.width, y / 2)
+        val paramsNA = RelativeLayout.LayoutParams(paramsA.width, paramsA.height)
+
+        paramsNQ.setMargins(F.dpToPx(16, this))
+        paramsNA.setMargins(F.dpToPx(16, this))
+        paramsNA.addRule(RelativeLayout.BELOW, R.id.quote)
+
+
+        // random alignment
+        val random = (0..2).random()
+        when (random) {
+            // left
+            0 -> {
+                paramsNA.addRule(RelativeLayout.ALIGN_PARENT_LEFT)
+
+                // set alignment
+                authorCard.layoutParams = paramsNA
+                quote.layoutParams = paramsNQ
+                quote.gravity = Gravity.LEFT
+            }
+            // center
+            1 -> {
+                paramsNA.addRule(RelativeLayout.CENTER_HORIZONTAL)
+
+                // set alignment
+                authorCard.layoutParams = paramsNA
+                quote.layoutParams = paramsNQ
+                quote.gravity = Gravity.CENTER
+            }
+            // right
+            2 -> {
+                paramsNA.addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
+
+                // set alignment
+                authorCard.layoutParams = paramsNA
+                quote.layoutParams = paramsNQ
+                quote.gravity = Gravity.RIGHT
+            }
+        }
     }
 
     // set background
-    private fun setBackground(){
+    private fun setBackground() {
         Blurry.with(this)
-                .async()
-                .sampling(2)
-                .from(bitmap)
-                .into(blurBg)
+            .async()
+            .sampling(2)
+            .from(bitmap)
+            .into(blurBg)
     }
 }
