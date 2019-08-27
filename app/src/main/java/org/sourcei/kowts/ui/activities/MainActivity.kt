@@ -26,9 +26,7 @@ import jp.wasabeef.blurry.Blurry
 import kotlinx.android.synthetic.main.inflator_quote.*
 import org.sourcei.kowts.R
 import org.sourcei.kowts.ui.Model
-import org.sourcei.kowts.utils.functions.F
-import org.sourcei.kowts.utils.functions.loge
-import org.sourcei.kowts.utils.functions.toast
+import org.sourcei.kowts.utils.functions.*
 import org.sourcei.kowts.utils.handler.ImageHandler
 
 /**
@@ -52,6 +50,7 @@ class MainActivity : AppCompatActivity() {
         // get dimensions
         val point = F.displayDimensions(this)
         setDimensions(point)
+        setFab()
 
         Model(this).getRandomQuote { e, r ->
             e?.let {
@@ -64,6 +63,9 @@ class MainActivity : AppCompatActivity() {
                         bitmap = it
                         background.setImageBitmap(it)
                         setBackground()
+
+                        progress.gone()
+                        card.show()
                     }
                 }
 
@@ -146,5 +148,11 @@ class MainActivity : AppCompatActivity() {
             .sampling(2)
             .from(bitmap)
             .into(blurBg)
+    }
+
+    // set fab
+    private fun setFab(){
+        val colors = F.randomGradient().toIntArray()
+        RevelyGradient.linear().colors(colors).onBackgroundOf(fab)
     }
 }
