@@ -18,12 +18,16 @@ import android.graphics.Bitmap
 import android.graphics.Point
 import android.os.Bundle
 import android.view.Gravity
+import android.view.View
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.setMargins
 import co.revely.gradient.RevelyGradient
 import jp.wasabeef.blurry.Blurry
-import kotlinx.android.synthetic.main.inflator_quote.*
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.sourcei.kowts.R
 import org.sourcei.kowts.ui.Model
 import org.sourcei.kowts.utils.functions.*
@@ -37,45 +41,90 @@ import org.sourcei.kowts.utils.handler.ImageHandler
  *
  * @note Created on 2019-08-20 by Saksham
  * @note Updates :
- *  Saksham - 2019-08-27 - master - random alignment
+ *  Saksham - 2019 08 27 - master - random alignment
+ *  Saksham - 2019 09 05 - master - handling button clicks
  */
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var bitmap: Bitmap
+    val model by lazy { Model(this) }
 
     // on create
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.inflator_quote)
+        setContentView(R.layout.activity_main)
 
-        // get dimensions
-        val point = F.displayDimensions(this)
-        setDimensions(point)
         setFab()
+        getRandomQuote()
 
-        Model(this).getRandomQuote { e, r ->
+        // click listeners
+        settings.setOnClickListener(this)
+        refresh.setOnClickListener(this)
+        changeGradient.setOnClickListener(this)
+        changeAuthor.setOnClickListener(this)
+        changeImage.setOnClickListener(this)
+        share.setOnClickListener(this)
+        download.setOnClickListener(this)
+    }
+
+    // button click handling
+    override fun onClick(v: View) {
+        when(v.id){
+
+            settings.id -> { }
+
+            refresh.id -> {
+                progress.show()
+                card.gone()
+                GlobalScope.launch {
+                    delay(1500)
+                    runOnUiThread { getRandomQuote() }
+                }
+            }
+
+            changeGradient.id -> {}
+
+            changeAuthor.id -> {}
+
+            changeImage.id -> {}
+
+            share.id -> {}
+
+            download.id -> {}
+
+        }
+    }
+
+    // get random quotes
+    private fun getRandomQuote() {
+
+        model.getRandomQuote { e, r ->
+
             e?.let {
                 loge(e)
-                toast("error")
+                toast("error fetching quote")
+                progress.gone()
             }
-            r?.let {
+            r?.let {pojo ->
+                setDimensions(F.displayDimensions(this))
                 ImageHandler.getBitmap(this) {
                     if (it != null) {
                         bitmap = it
                         background.setImageBitmap(it)
                         setBackground()
 
-                        progress.gone()
-                        card.show()
-                    }
-                }
+                        val colors = F.randomGradient().toIntArray()
+                        RevelyGradient.linear().colors(colors).onBackgroundOf(gradient)
+                        RevelyGradient.linear().colors(colors).onBackgroundOf(blurMask)
+                        RevelyGradient.linear().colors(F.randomGradient().toIntArray()).onBackgroundOf(authorLayout)
+                        quote.text = pojo.quote
+                        author.text = pojo.author
 
-                val colors = F.randomGradient().toIntArray()
-                RevelyGradient.linear().colors(colors).onBackgroundOf(gradient)
-                RevelyGradient.linear().colors(colors).onBackgroundOf(blurMask)
-                RevelyGradient.linear().colors(F.randomGradient().toIntArray())
-                    .onBackgroundOf(authorLayout)
-                quote.text = it.quote
-                author.text = it.author
+                        card.show()
+                    } else
+                        toast("error fetching quote image")
+
+                    progress.gone()
+                }
             }
         }
     }
@@ -144,14 +193,14 @@ class MainActivity : AppCompatActivity() {
     // set background
     private fun setBackground() {
         Blurry.with(this)
-            .async()
-            .sampling(2)
-            .from(bitmap)
-            .into(blurBg)
+                .async()
+                .sampling(2)
+                .from(bitmap)
+                .into(blurBg)
     }
 
     // set fab
-    private fun setFab(){
+    private fun setFab() {
         val colors = F.randomGradient().toIntArray()
         RevelyGradient.linear().colors(colors).onBackgroundOf(fab)
     }
