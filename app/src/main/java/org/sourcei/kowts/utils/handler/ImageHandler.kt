@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.sourcei.kowts.utils.functions.F
 
 /**
  * @info -
@@ -30,11 +31,12 @@ import kotlinx.coroutines.launch
  *
  * @note Created on 2019-08-23 by Saksham
  * @note Updates :
+ *  Saksham - 2019 09 06 - master - handling duplicate bitmap
  */
 object ImageHandler {
 
     // get bitmap
-    fun getBitmap(context: Context, callback: (Bitmap?) -> Unit) {
+    fun getBitmap(bitmap: Bitmap?, context: Context, callback: (Bitmap?) -> Unit) {
 
         GlobalScope.launch {
             val future = Glide.with(context)
@@ -44,11 +46,14 @@ object ImageHandler {
                 .skipMemoryCache(true)
                 .submit()
 
-            val bitmap = future.get()
-            (context as AppCompatActivity).runOnUiThread {
-                callback(bitmap)
+            val bitmapN = future.get()
+            F.compareBitmaps(bitmap, bitmapN) {
+                if (it)
+                    getBitmap(bitmap, context, callback)
+                else
+                    (context as AppCompatActivity).runOnUiThread { callback(bitmapN) }
+                Glide.with(context).clear(future)
             }
-            Glide.with(context).clear(future)
         }
     }
 }

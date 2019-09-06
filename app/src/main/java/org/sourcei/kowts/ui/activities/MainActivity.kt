@@ -25,9 +25,6 @@ import androidx.core.view.setMargins
 import co.revely.gradient.RevelyGradient
 import jp.wasabeef.blurry.Blurry
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.sourcei.kowts.R
 import org.sourcei.kowts.ui.Model
 import org.sourcei.kowts.utils.functions.*
@@ -45,7 +42,7 @@ import org.sourcei.kowts.utils.handler.ImageHandler
  *  Saksham - 2019 09 05 - master - handling button clicks
  */
 class MainActivity : AppCompatActivity(), View.OnClickListener {
-    lateinit var bitmap: Bitmap
+    var bitmap: Bitmap? = null
     val model by lazy { Model(this) }
 
     // on create
@@ -68,34 +65,30 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     // button click handling
     override fun onClick(v: View) {
-        when(v.id){
+        when (v.id) {
 
-            settings.id -> { }
-
-            refresh.id -> {
-                progress.show()
-                card.gone()
-                GlobalScope.launch {
-                    delay(1500)
-                    runOnUiThread { getRandomQuote() }
-                }
+            settings.id -> {
             }
 
-            changeGradient.id -> {}
+            refresh.id -> getRandomQuote()
+            changeGradient.id -> changeGradient()
+            changeAuthor.id -> changeGradientAuthor()
+            changeImage.id -> changeImage()
 
-            changeAuthor.id -> {}
+            share.id -> {
+            }
 
-            changeImage.id -> {}
-
-            share.id -> {}
-
-            download.id -> {}
+            download.id -> {
+            }
 
         }
     }
 
     // get random quotes
     private fun getRandomQuote() {
+
+        progress.show()
+        card.gone()
 
         model.getRandomQuote { e, r ->
 
@@ -104,18 +97,21 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 toast("error fetching quote")
                 progress.gone()
             }
-            r?.let {pojo ->
+            r?.let { pojo ->
                 setDimensions(F.displayDimensions(this))
-                ImageHandler.getBitmap(this) {
+                ImageHandler.getBitmap(bitmap, this) {
                     if (it != null) {
+
                         bitmap = it
                         background.setImageBitmap(it)
                         setBackground()
 
                         val colors = F.randomGradient().toIntArray()
-                        RevelyGradient.linear().colors(colors).onBackgroundOf(gradient)
-                        RevelyGradient.linear().colors(colors).onBackgroundOf(blurMask)
-                        RevelyGradient.linear().colors(F.randomGradient().toIntArray()).onBackgroundOf(authorLayout)
+                        val angle = (0..180).random().toFloat()
+                        RevelyGradient.linear().colors(colors).angle(angle).onBackgroundOf(gradient)
+                        RevelyGradient.linear().colors(colors).angle(angle).onBackgroundOf(blurMask)
+                        RevelyGradient.linear().colors(F.randomGradient().toIntArray())
+                            .onBackgroundOf(authorLayout)
                         quote.text = pojo.quote
                         author.text = pojo.author
 
@@ -193,15 +189,43 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     // set background
     private fun setBackground() {
         Blurry.with(this)
-                .async()
-                .sampling(2)
-                .from(bitmap)
-                .into(blurBg)
+            .async()
+            .sampling(2)
+            .from(bitmap)
+            .into(blurBg)
     }
 
     // set fab
     private fun setFab() {
         val colors = F.randomGradient().toIntArray()
         RevelyGradient.linear().colors(colors).onBackgroundOf(fab)
+    }
+
+    // change gradient design
+    private fun changeGradient() {
+        val colors = F.randomGradient().toIntArray()
+        val angle = (0..180).random().toFloat()
+        RevelyGradient.linear().colors(colors).angle(angle).onBackgroundOf(gradient)
+        RevelyGradient.linear().colors(colors).angle(angle).onBackgroundOf(blurMask)
+    }
+
+    // change gradient author
+    private fun changeGradientAuthor() {
+        RevelyGradient.linear().colors(F.randomGradient().toIntArray()).onBackgroundOf(authorLayout)
+    }
+
+    // change image
+    private fun changeImage() {
+        progressImage.show()
+        ImageHandler.getBitmap(bitmap, this) {
+            if (it != null) {
+                bitmap = it
+                background.setImageBitmap(it)
+                setBackground()
+            } else
+                toast("error fetching quote image")
+
+            progressImage.gone()
+        }
     }
 }

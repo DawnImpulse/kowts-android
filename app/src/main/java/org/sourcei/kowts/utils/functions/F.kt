@@ -16,10 +16,13 @@ package org.sourcei.kowts.utils.functions
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.Point
 import android.net.Uri
 import android.view.WindowManager
 import androidx.core.graphics.toColorInt
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 /**
  * @info -
@@ -29,13 +32,14 @@ import androidx.core.graphics.toColorInt
  *
  * @note Created on 2019-08-20 by Saksham
  * @note Updates :
+ * Saksham - 2019 09 06 - master - compare bitmap
  */
 object F {
 
     /**
      * Generating random color
      */
-    fun randomColor(): String {
+    private fun randomColor(): String {
         val chars =
             listOf("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F")
         var color = "#"
@@ -126,5 +130,22 @@ object F {
             result.toString()
         } else
             string
+    }
+
+    // verify two bitmaps
+    fun compareBitmaps(b1: Bitmap?, b2: Bitmap?, callback: (Boolean) -> Unit) {
+
+        if (b1 == null || b2 == null) {
+            callback(false)
+        } else
+            GlobalScope.launch {
+                try {
+                    callback(b1.sameAs(b2)) // callback with compare
+                } catch (e: Exception) {
+                    //Crashlytics.logException(e)
+                    e.printStackTrace()
+                    callback(false)
+                }
+            }
     }
 }
