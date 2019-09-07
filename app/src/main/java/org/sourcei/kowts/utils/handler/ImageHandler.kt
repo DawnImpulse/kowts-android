@@ -40,11 +40,11 @@ object ImageHandler {
 
         GlobalScope.launch {
             val future = Glide.with(context)
-                .asBitmap()
-                .load("https://source.unsplash.com/random")
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
-                .submit()
+                    .asBitmap()
+                    .load("https://source.unsplash.com/random")
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .submit()
 
             val bitmapN = future.get()
             F.compareBitmaps(bitmap, bitmapN) {
@@ -52,7 +52,6 @@ object ImageHandler {
                     getBitmap(bitmap, context, callback)
                 else
                     (context as AppCompatActivity).runOnUiThread { callback(bitmapN) }
-                Glide.with(context).clear(future)
             }
         }
     }

@@ -14,12 +14,9 @@
  **/
 package org.sourcei.kowts.network
 
-import org.sourcei.kowts.BuildConfig
-import org.sourcei.kowts.ui.pojo.ListQuotes
-import org.sourcei.kowts.utils.reusables.X_API_KEY
-import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Header
+import androidx.appcompat.app.AppCompatActivity
+import org.sourcei.kowts.ui.pojo.PojoQuotes
+import org.sourcei.kowts.utils.reusables.Lifecycle
 
 /**
  * @info -
@@ -29,12 +26,17 @@ import retrofit2.http.Header
  *
  * @note Created on 2019-08-20 by Saksham
  * @note Updates :
- *  Saksham - 2019 09 07 - master - fetching 30 random quotes
+ *  Saksham - 2019 09 07 - master - using list of PojoQuotes
  */
-interface Source {
+class Model(private val activity: AppCompatActivity) {
 
-    @GET("v1/quotes/random?limit=30")
-    fun randomQuote(
-        @Header(X_API_KEY) apiKey: String = BuildConfig.API_KEY
-    ): Call<ListQuotes>
+    /**
+     * get random quote
+     * @param callback
+     */
+    fun getRandomQuote(callback: (Any?, List<PojoQuotes>?) -> Unit) {
+        Lifecycle.onStart(activity) {
+            Repo.getRandomQuote(callback)
+        }
+    }
 }

@@ -26,7 +26,6 @@ import co.revely.gradient.RevelyGradient
 import jp.wasabeef.blurry.Blurry
 import kotlinx.android.synthetic.main.activity_main.*
 import org.sourcei.kowts.R
-import org.sourcei.kowts.ui.Model
 import org.sourcei.kowts.utils.functions.*
 import org.sourcei.kowts.utils.handler.ImageHandler
 
@@ -40,10 +39,10 @@ import org.sourcei.kowts.utils.handler.ImageHandler
  * @note Updates :
  *  Saksham - 2019 08 27 - master - random alignment
  *  Saksham - 2019 09 05 - master - handling button clicks
+ *  Saksham - 2019 09 07 - master - multiple quote handling
  */
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     var bitmap: Bitmap? = null
-    val model by lazy { Model(this) }
 
     // on create
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -90,14 +89,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         progress.show()
         card.gone()
 
-        model.getRandomQuote { e, r ->
-
-            e?.let {
-                loge(e)
-                toast("error fetching quote")
-                progress.gone()
-            }
-            r?.let { pojo ->
+        F.getQuote(this) { pojo ->
+            if (pojo != null) {
+                logd(pojo)
                 setDimensions(F.displayDimensions(this))
                 ImageHandler.getBitmap(bitmap, this) {
                     if (it != null) {
@@ -110,8 +104,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         val angle = (0..180).random().toFloat()
                         RevelyGradient.linear().colors(colors).angle(angle).onBackgroundOf(gradient)
                         RevelyGradient.linear().colors(colors).angle(angle).onBackgroundOf(blurMask)
-                        RevelyGradient.linear().colors(F.randomGradient().toIntArray())
-                            .onBackgroundOf(authorLayout)
+                        RevelyGradient.linear().colors(F.randomGradient().toIntArray()).onBackgroundOf(authorLayout)
                         quote.text = pojo.quote
                         author.text = pojo.author
 
@@ -121,6 +114,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
                     progress.gone()
                 }
+            } else {
+                toast("error fetching quote")
+                progress.gone()
             }
         }
     }
@@ -189,10 +185,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     // set background
     private fun setBackground() {
         Blurry.with(this)
-            .async()
-            .sampling(2)
-            .from(bitmap)
-            .into(blurBg)
+                .async()
+                .sampling(2)
+                .from(bitmap)
+                .into(blurBg)
     }
 
     // set fab

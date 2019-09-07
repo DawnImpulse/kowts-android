@@ -25,3 +25,4 @@ package org.sourcei.kowts.utils.reusables
  */
 
 const val X_API_KEY = "x-api-key"
+const val QUOTES = "quotes"

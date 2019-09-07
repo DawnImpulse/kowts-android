@@ -29,6 +29,7 @@ import retrofit2.Response
  *
  * @note Created on 2019-08-20 by Saksham
  * @note Updates :
+ *  Saksham - 2019 09 07 - master - using list of PojoQuotes
  */
 object Repo {
     val client = RetroApiClient.getClient().create(Source::class.java)
@@ -38,7 +39,7 @@ object Repo {
      *
      * @param callback
      */
-    fun getRandomQuote(callback: (Any?, PojoQuotes?) -> Unit) {
+    fun getRandomQuote(callback: (Any?, List<PojoQuotes>?) -> Unit) {
 
         val call = client.randomQuote()
 
@@ -47,7 +48,7 @@ object Repo {
             // response
             override fun onResponse(call: Call<ListQuotes>, response: Response<ListQuotes>) {
                 if (response.isSuccessful) {
-                    callback(null, response.body()!!.details[0])
+                    callback(null, response.body()!!.details)
                 } else
                     callback(ErrorHandler.parseError(response), null)
             }

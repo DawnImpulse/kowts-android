@@ -14,10 +14,8 @@
  **/
 package org.sourcei.kowts.ui
 
-import androidx.appcompat.app.AppCompatActivity
-import org.sourcei.kowts.network.Repo
-import org.sourcei.kowts.ui.pojo.PojoQuotes
-import org.sourcei.kowts.utils.reusables.Lifecycle
+import android.app.Application
+import io.paperdb.Paper
 
 /**
  * @info -
@@ -25,18 +23,13 @@ import org.sourcei.kowts.utils.reusables.Lifecycle
  * @author - Saksham
  * @note Last Branch Update - master
  *
- * @note Created on 2019-08-20 by Saksham
+ * @note Created on 2019-09-07 by Saksham
  * @note Updates :
  */
-class Model(private val activity: AppCompatActivity) {
+class App : Application(){
 
-    /**
-     * get random quote
-     * @param callback
-     */
-    fun getRandomQuote(callback: (Any?, PojoQuotes?) -> Unit) {
-        Lifecycle.onStart(activity) {
-            Repo.getRandomQuote(callback)
-        }
+    override fun onCreate() {
+        super.onCreate()
+        Paper.init(this)
     }
 }

@@ -12,14 +12,7 @@
  * WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
  * OR PERFORMANCE OF THIS SOFTWARE.
  **/
-package org.sourcei.kowts.network
-
-import org.sourcei.kowts.BuildConfig
-import org.sourcei.kowts.ui.pojo.ListQuotes
-import org.sourcei.kowts.utils.reusables.X_API_KEY
-import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Header
+package org.sourcei.kowts.utils.reusables
 
 /**
  * @info -
@@ -27,14 +20,7 @@ import retrofit2.http.Header
  * @author - Saksham
  * @note Last Branch Update - master
  *
- * @note Created on 2019-08-20 by Saksham
+ * @note Created on 2019-09-07 by Saksham
  * @note Updates :
- *  Saksham - 2019 09 07 - master - fetching 30 random quotes
  */
-interface Source {
-
-    @GET("v1/quotes/random?limit=30")
-    fun randomQuote(
-        @Header(X_API_KEY) apiKey: String = BuildConfig.API_KEY
-    ): Call<ListQuotes>
-}
+val Paper by lazy { io.paperdb.Paper.book() }
