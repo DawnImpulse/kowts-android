@@ -53,32 +53,32 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         getRandomQuote()
 
         // click listeners
-        settings.setOnClickListener(this)
+        /*settings.setOnClickListener(this)
         refresh.setOnClickListener(this)
         changeGradient.setOnClickListener(this)
         changeAuthor.setOnClickListener(this)
         changeImage.setOnClickListener(this)
         share.setOnClickListener(this)
-        download.setOnClickListener(this)
+        download.setOnClickListener(this)*/
     }
 
     // button click handling
     override fun onClick(v: View) {
         when (v.id) {
 
-            settings.id -> {
-            }
+            /* settings.id -> {
+             }
 
-            refresh.id -> getRandomQuote()
-            changeGradient.id -> changeGradient()
-            changeAuthor.id -> changeGradientAuthor()
-            changeImage.id -> changeImage()
+             refresh.id -> getRandomQuote()
+             changeGradient.id -> changeGradient()
+             changeAuthor.id -> changeGradientAuthor()
+             changeImage.id -> changeImage()
 
-            share.id -> {
-            }
+             share.id -> {
+             }
 
-            download.id -> {
-            }
+             download.id -> {
+             }*/
 
         }
     }
@@ -104,7 +104,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         val angle = (0..180).random().toFloat()
                         RevelyGradient.linear().colors(colors).angle(angle).onBackgroundOf(gradient)
                         RevelyGradient.linear().colors(colors).angle(angle).onBackgroundOf(blurMask)
-                        RevelyGradient.linear().colors(F.randomGradient().toIntArray()).onBackgroundOf(authorLayout)
+                        RevelyGradient.linear().colors(F.randomGradient().toIntArray())
+                            .onBackgroundOf(authorLayout)
                         quote.text = pojo.quote
                         author.text = pojo.author
 
@@ -126,11 +127,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         // set dimensions for card
         val x = point.x - F.dpToPx(32, this)
-        val y = x + x / 4
+        val y = x
 
         val params = RelativeLayout.LayoutParams(x, y)
         params.addRule(RelativeLayout.CENTER_HORIZONTAL)
-        params.addRule(RelativeLayout.CENTER_VERTICAL)
+        params.topMargin = (point.y - y) / 4
+        //params.addRule(RelativeLayout.CENTER_VERTICAL)
         card.layoutParams = params
 
 
@@ -141,7 +143,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val paramsA = authorCard.layoutParams // original params for author
 
         // new params
-        val paramsNQ = RelativeLayout.LayoutParams(paramsT.width, y / 2)
+        val paramsNQ = RelativeLayout.LayoutParams(paramsT.width, 3 * y / 4)
         val paramsNA = RelativeLayout.LayoutParams(paramsA.width, paramsA.height)
 
         paramsNQ.setMargins(F.dpToPx(16, this))
@@ -185,16 +187,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     // set background
     private fun setBackground() {
         Blurry.with(this)
-                .async()
-                .sampling(2)
-                .from(bitmap)
-                .into(blurBg)
+            .async()
+            .sampling(1)
+            .from(bitmap)
+            .into(blurBg)
     }
 
     // set fab
     private fun setFab() {
         val colors = F.randomGradient().toIntArray()
-        RevelyGradient.linear().colors(colors).onBackgroundOf(fab)
+        //RevelyGradient.linear().colors(colors).onBackgroundOf(fab)
     }
 
     // change gradient design

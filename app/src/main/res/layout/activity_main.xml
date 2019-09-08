@@ -43,7 +43,7 @@ OR PERFORMANCE OF THIS SOFTWARE.
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_margin="32dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:cardCornerRadius="12dp">
 
         <RelativeLayout
@@ -83,7 +83,7 @@ OR PERFORMANCE OF THIS SOFTWARE.
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/authorCard"
                 android:layout_width="wrap_content"
-                android:layout_height="24dp"
+                android:layout_height="30dp"
                 android:layout_below="@id/quote"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
@@ -100,6 +100,7 @@ OR PERFORMANCE OF THIS SOFTWARE.
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:letterSpacing="0.05"
+                    android:layout_gravity="center"
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"
                     android:text="Hello World"
@@ -107,94 +108,14 @@ OR PERFORMANCE OF THIS SOFTWARE.
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!--Actions-->
-            <LinearLayout
-                android:id="@+id/actions"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_alignParentBottom="true"
-                android:background="@drawable/bg_black_gradient"
-                android:orientation="horizontal">
-
-                <!--Gradient Change-->
-                <FrameLayout
-                    android:id="@+id/changeGradient"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="1">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="center"
-                        app:srcCompat="@drawable/vd_gradient" />
-                </FrameLayout>
-
-                <!--Author Change-->
-                <FrameLayout
-                    android:id="@+id/changeAuthor"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="1">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="center"
-                        app:srcCompat="@drawable/vd_refresh_2" />
-                </FrameLayout>
-
-                <!--Image Change-->
-                <FrameLayout
-                    android:id="@+id/changeImage"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="1">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="center"
-                        app:srcCompat="@drawable/vd_image" />
-                </FrameLayout>
-
-                <!--Share-->
-                <FrameLayout
-                    android:id="@+id/share"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="1">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="center"
-                        app:srcCompat="@drawable/vd_share" />
-                </FrameLayout>
-
-                <!--Download-->
-                <FrameLayout
-                    android:id="@+id/download"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="1">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="center"
-                        app:srcCompat="@drawable/vd_download" />
-                </FrameLayout>
-            </LinearLayout>
-
             <!--Progress Image-->
             <ProgressBar
-                android:layout_centerVertical="true"
-                android:layout_centerHorizontal="true"
-                android:visibility="gone"
                 android:id="@+id/progressImage"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:visibility="gone" />
 
         </RelativeLayout>
     </com.google.android.material.card.MaterialCardView>
@@ -209,50 +130,5 @@ OR PERFORMANCE OF THIS SOFTWARE.
         android:layout_centerVertical="true"
         android:indeterminate="true" />
 
-    <!--Fab-->
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="120dp"
-        android:layout_height="36dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="16dp"
-        app:cardCornerRadius="24dp">
 
-        <LinearLayout
-            android:id="@+id/fab"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <!--Settings-->
-            <FrameLayout
-                android:id="@+id/settings"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center"
-                    app:srcCompat="@drawable/vd_settings" />
-            </FrameLayout>
-
-            <!--Refresh-->
-            <FrameLayout
-                android:id="@+id/refresh"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center"
-                    app:srcCompat="@drawable/vd_refresh" />
-            </FrameLayout>
-
-        </LinearLayout>
-
-    </com.google.android.material.card.MaterialCardView>
 </RelativeLayout>
