@@ -53,13 +53,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         getRandomQuote()
 
         // click listeners
-        /*settings.setOnClickListener(this)
+        //settings.setOnClickListener(this)
         refresh.setOnClickListener(this)
-        changeGradient.setOnClickListener(this)
+        download.setOnClickListener(this)
+        /*changeGradient.setOnClickListener(this)
         changeAuthor.setOnClickListener(this)
         changeImage.setOnClickListener(this)
-        share.setOnClickListener(this)
-        download.setOnClickListener(this)*/
+        share.setOnClickListener(this)*/
     }
 
     // button click handling
@@ -79,6 +79,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
              download.id -> {
              }*/
+
+            refresh.id -> getRandomQuote()
 
         }
     }
@@ -137,6 +139,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
 
         // set dimensions for quote & author layout
+        val margin = F.dpToPx(16, this)
 
         // original params
         val paramsT = quote.layoutParams // original params for quote
@@ -146,8 +149,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val paramsNQ = RelativeLayout.LayoutParams(paramsT.width, 3 * y / 4)
         val paramsNA = RelativeLayout.LayoutParams(paramsA.width, paramsA.height)
 
-        paramsNQ.setMargins(F.dpToPx(16, this))
-        paramsNA.setMargins(F.dpToPx(16, this))
+        paramsNQ.setMargins(margin)
+        paramsNA.setMargins(margin, 0, margin, margin)
         paramsNA.addRule(RelativeLayout.BELOW, R.id.quote)
 
 
