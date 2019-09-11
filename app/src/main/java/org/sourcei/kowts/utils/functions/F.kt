@@ -16,16 +16,27 @@ package org.sourcei.kowts.utils.functions
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Point
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
 import android.view.WindowManager
+import android.widget.FrameLayout
+import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.toColorInt
+import androidx.core.view.setMargins
+import co.revely.gradient.RevelyGradient
+import kotlinx.android.synthetic.main.inflator_quote_empty.view.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.sourcei.kowts.R
 import org.sourcei.kowts.network.Model
 import org.sourcei.kowts.ui.pojo.PojoQuotes
 import org.sourcei.kowts.utils.reusables.Paper
 import org.sourcei.kowts.utils.reusables.QUOTES
+
 
 /**
  * @info -
@@ -37,6 +48,7 @@ import org.sourcei.kowts.utils.reusables.QUOTES
  * @note Updates :
  * Saksham - 2019 09 06 - master - compare bitmap
  * Saksham - 2019 09 07 - master - handing of multiple quotes
+ * Saksham - 2019 09 11 - master - generate quote bitmap for storage
  */
 object F {
 
@@ -125,5 +137,102 @@ object F {
                 }
             }
         }
+    }
+
+
+    //
+    fun generateBitmap2(context: Context, bitmap: Bitmap): Bitmap {
+        val layout = LayoutInflater.from(context).inflate(R.layout.inflator_quote_empty, null)
+        val card = layout.card
+        val quote = layout.quote
+        val authorCard = layout.authorCard
+        val authorText = layout.author
+        val image = layout.image
+        val gradient = layout.gradient
+        val authorLayout = layout.authorLayout
+
+        // set dimensions for card
+        val point = displayDimensions(context)
+        val x = point.x - dpToPx(32, context)
+        val y = x
+
+        val params = FrameLayout.LayoutParams(x, y)
+        //params.addRule(RelativeLayout.CENTER_VERTICAL)
+        card.layoutParams = params
+
+
+        // set dimensions for quote & author layout
+        val margin = dpToPx(16, context)
+
+        // original params
+        val paramsT = quote.layoutParams // original params for quote
+        val paramsA = authorCard.layoutParams // original params for author
+
+        // new params
+        val paramsNQ = RelativeLayout.LayoutParams(paramsT.width, 3 * y / 4)
+        val paramsNA = RelativeLayout.LayoutParams(paramsA.width, paramsA.height)
+
+        paramsNQ.setMargins(margin)
+        paramsNA.setMargins(margin, 0, margin, margin)
+        paramsNA.addRule(RelativeLayout.BELOW, R.id.quote)
+
+
+        // random alignment
+        val random = (0..2).random()
+        when (random) {
+            // left
+            0 -> {
+                paramsNA.addRule(RelativeLayout.ALIGN_PARENT_LEFT)
+
+                // set alignment
+                authorCard.layoutParams = paramsNA
+                quote.layoutParams = paramsNQ
+                quote.gravity = Gravity.LEFT
+            }
+            // center
+            1 -> {
+                paramsNA.addRule(RelativeLayout.CENTER_HORIZONTAL)
+
+                // set alignment
+                authorCard.layoutParams = paramsNA
+                quote.layoutParams = paramsNQ
+                quote.gravity = Gravity.CENTER
+            }
+            // right
+            2 -> {
+                paramsNA.addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
+
+                // set alignment
+                authorCard.layoutParams = paramsNA
+                quote.layoutParams = paramsNQ
+                quote.gravity = Gravity.RIGHT
+            }
+        }
+
+
+        layout.measure(View.MeasureSpec.makeMeasureSpec(x, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(y, View.MeasureSpec.EXACTLY))
+        layout.layout(0, 0, layout.measuredWidth, layout.measuredHeight)
+
+        image.setImageBitmap(bitmap)
+        authorText.text = "Hello World"
+        quote.text = "Hello my world is very AWESOME !!!"
+
+        val colors = randomGradient().toIntArray()
+        val angle = (0..180).random().toFloat()
+        RevelyGradient.linear().colors(colors).angle(angle).onBackgroundOf(gradient)
+        RevelyGradient.linear().colors(randomGradient().toIntArray()).onBackgroundOf(authorLayout)
+
+        return getBitmapFromView(layout)
+    }
+
+    fun getBitmapFromView(view: View): Bitmap {
+        //view.measure(0,View.MeasureSpec.UNSPECIFIED)
+
+        val bitmap = Bitmap.createBitmap(view.measuredWidth, view.measuredHeight,
+                Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        view.layout(0, 0, view.measuredWidth, view.measuredHeight)
+        view.draw(canvas)
+        return bitmap
     }
 }

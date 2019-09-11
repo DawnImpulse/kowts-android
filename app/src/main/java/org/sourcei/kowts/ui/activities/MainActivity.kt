@@ -17,6 +17,7 @@ package org.sourcei.kowts.ui.activities
 import android.graphics.Bitmap
 import android.graphics.Point
 import android.os.Bundle
+import android.os.Environment
 import android.view.Gravity
 import android.view.View
 import android.widget.RelativeLayout
@@ -25,9 +26,14 @@ import androidx.core.view.setMargins
 import co.revely.gradient.RevelyGradient
 import jp.wasabeef.blurry.Blurry
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import org.sourcei.android.permissions.Permissions
 import org.sourcei.kowts.R
 import org.sourcei.kowts.utils.functions.*
 import org.sourcei.kowts.utils.handler.ImageHandler
+import org.sourcei.kowts.utils.handler.StorageHandler
+import java.io.File
 
 /**
  * @info -
@@ -82,6 +88,24 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
             refresh.id -> getRandomQuote()
 
+            download.id -> {
+                Permissions.askWriteExternalStoragePermission(this) { e, r ->
+                    e?.let {
+
+                    }
+                    r?.let {
+                        GlobalScope.launch {
+                            val b = F.generateBitmap2(this@MainActivity, bitmap!!)
+                            val file = File(Environment.getExternalStorageDirectory().path, "abcdefg.jpg")
+                            StorageHandler.storeBitmapInFile(this@MainActivity, b, file)
+                            runOnUiThread {
+                                toast(file.toString())
+                            }
+                        }
+                    }
+                }
+            }
+
         }
     }
 
@@ -107,7 +131,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         RevelyGradient.linear().colors(colors).angle(angle).onBackgroundOf(gradient)
                         RevelyGradient.linear().colors(colors).angle(angle).onBackgroundOf(blurMask)
                         RevelyGradient.linear().colors(F.randomGradient().toIntArray())
-                            .onBackgroundOf(authorLayout)
+                                .onBackgroundOf(authorLayout)
                         quote.text = pojo.quote
                         author.text = pojo.author
 
@@ -190,10 +214,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     // set background
     private fun setBackground() {
         Blurry.with(this)
-            .async()
-            .sampling(1)
-            .from(bitmap)
-            .into(blurBg)
+                .async()
+                .sampling(1)
+                .from(bitmap)
+                .into(blurBg)
     }
 
     // set fab
