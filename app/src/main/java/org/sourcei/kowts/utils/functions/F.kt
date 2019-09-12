@@ -18,7 +18,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Point
-import android.graphics.drawable.GradientDrawable
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -28,7 +27,6 @@ import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.toColorInt
 import androidx.core.view.setMargins
-import co.revely.gradient.RevelyGradient
 import kotlinx.android.synthetic.main.inflator_quote_empty.view.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -56,7 +54,8 @@ object F {
 
     private fun getBitmapFromView(view: View): Bitmap {
 
-        val bitmap = Bitmap.createBitmap(view.measuredWidth, view.measuredHeight, Bitmap.Config.ARGB_8888)
+        val bitmap =
+                Bitmap.createBitmap(view.measuredWidth, view.measuredHeight, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
         view.layout(0, 0, view.measuredWidth, view.measuredHeight)
         view.draw(canvas)
@@ -151,15 +150,19 @@ object F {
     }
 
     // generate quote bitmap
-    fun generateBitmap(context: Context, quoteObject:ObjectQuote): Bitmap {
+    fun generateBitmap(context: Context, quoteObject: ObjectQuote): Bitmap {
         val layout = LayoutInflater.from(context).inflate(R.layout.inflator_quote_empty, null)
         val card = layout.card
         val quote = layout.quote
-        val authorCard = layout.authorCard
         val authorText = layout.author
         val image = layout.image
         val gradient = layout.gradient
         val authorLayout = layout.authorLayout
+
+        // set values
+        image.setImageBitmap(quoteObject.image)
+        authorText.text = quoteObject.author
+        quote.text = quoteObject.quote
 
         // set dimensions for card
         val point = displayDimensions(context)
@@ -176,7 +179,7 @@ object F {
 
         // original params
         val paramsT = quote.layoutParams // original params for quote
-        val paramsA = authorCard.layoutParams // original params for author
+        val paramsA = authorLayout.layoutParams // original params for author
 
         // new params
         val paramsNQ = RelativeLayout.LayoutParams(paramsT.width, 3 * y / 4)
@@ -195,7 +198,7 @@ object F {
                 paramsNA.addRule(RelativeLayout.ALIGN_PARENT_LEFT)
 
                 // set alignment
-                authorCard.layoutParams = paramsNA
+                authorLayout.layoutParams = paramsNA
                 quote.layoutParams = paramsNQ
                 quote.gravity = Gravity.LEFT
             }
@@ -204,7 +207,7 @@ object F {
                 paramsNA.addRule(RelativeLayout.CENTER_HORIZONTAL)
 
                 // set alignment
-                authorCard.layoutParams = paramsNA
+                authorLayout.layoutParams = paramsNA
                 quote.layoutParams = paramsNQ
                 quote.gravity = Gravity.CENTER
             }
@@ -213,7 +216,7 @@ object F {
                 paramsNA.addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
 
                 // set alignment
-                authorCard.layoutParams = paramsNA
+                authorLayout.layoutParams = paramsNA
                 quote.layoutParams = paramsNQ
                 quote.gravity = Gravity.RIGHT
             }
@@ -223,18 +226,8 @@ object F {
         layout.measure(View.MeasureSpec.makeMeasureSpec(x, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(y, View.MeasureSpec.EXACTLY))
         layout.layout(0, 0, layout.measuredWidth, layout.measuredHeight)
 
-        image.setImageBitmap(quoteObject.image)
-        authorText.text = quoteObject.author
-        quote.text = quoteObject.quote
-
-        RevelyGradient.linear().colors(quoteObject.gradient).angle(quoteObject.angle).onBackgroundOf(gradient)
-
-        val bbg = authorLayout.background.current as GradientDrawable
-        bbg.cornerRadius = dpToPx(16, context).toFloat()
-        bbg.colors = randomGradient().toIntArray()
-        bbg.orientation = GradientDrawable.Orientation.LEFT_RIGHT
-        authorLayout.background = bbg
-
+        gradient.setGradient(quoteObject.gradient, 0, quoteObject.angle)
+        authorLayout.setGradient(quoteObject.authorGradient, 16)
 
         return getBitmapFromView(layout)
     }

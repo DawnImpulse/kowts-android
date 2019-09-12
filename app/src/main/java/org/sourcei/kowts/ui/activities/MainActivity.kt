@@ -23,17 +23,13 @@ import android.view.View
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.setMargins
-import co.revely.gradient.RevelyGradient
 import jp.wasabeef.blurry.Blurry
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.sourcei.android.permissions.Permissions
 import org.sourcei.kowts.R
-import org.sourcei.kowts.utils.functions.F
-import org.sourcei.kowts.utils.functions.gone
-import org.sourcei.kowts.utils.functions.show
-import org.sourcei.kowts.utils.functions.toast
+import org.sourcei.kowts.utils.functions.*
 import org.sourcei.kowts.utils.handler.ImageHandler
 import org.sourcei.kowts.utils.handler.StorageHandler
 import org.sourcei.kowts.utils.pojo.ObjectQuote
@@ -63,6 +59,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        setDimensions(F.displayDimensions(this))
         getRandomQuote()
 
         refresh.setOnClickListener(this)
@@ -83,8 +80,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     r?.let {
                         GlobalScope.launch {
                             val b = F.generateBitmap(this@MainActivity, quoteObject)
-                            val file =
-                                    File(Environment.getExternalStorageDirectory().path, "abcdefg.jpg")
+                            val file = File(Environment.getExternalStorageDirectory().path, "abcdefg.jpg")
                             StorageHandler.storeBitmapInFile(this@MainActivity, b, file)
                             runOnUiThread {
                                 toast(file.toString())
@@ -106,7 +102,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         F.getQuote(this) { pojo ->
             if (pojo != null) {
 
-                setDimensions(F.displayDimensions(this))
                 ImageHandler.getBitmap(bitmap, this) {
                     if (it != null) {
 
@@ -123,9 +118,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         background.setImageBitmap(it)
                         setBackground()
 
-                        RevelyGradient.linear().colors(colors).angle(angle).onBackgroundOf(gradient)
-                        RevelyGradient.linear().colors(colors).angle(angle).onBackgroundOf(blurMask)
-                        RevelyGradient.linear().colors(colorsAuthor).onBackgroundOf(authorLayout)
+                        gradient.setGradient(colors, 0, angle)
+                        blurMask.setGradient(colors, 0, angle)
+                        authorLayout.setGradient(colorsAuthor, 16)
 
                         quote.text = pojo.quote
                         author.text = pojo.author
@@ -171,15 +166,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         paramsNA.setMargins(margin, 0, margin, margin)
         paramsNA.addRule(RelativeLayout.BELOW, R.id.quote)
 
-
-        // random alignment
-        val random = (0..2).random()
-        paramsNA.addRule(RelativeLayout.ALIGN_PARENT_LEFT)
-
         // set alignment
         authorCard.layoutParams = paramsNA
         quote.layoutParams = paramsNQ
-        quote.gravity = Gravity.LEFT
     }
 
     // set background
@@ -191,17 +180,53 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 .into(blurBg)
     }
 
+    // change quote alignment
+    private fun changeAlignment(align: Int) {
+        quote.gravity = when (align) {
+            0 -> Gravity.LEFT
+            1 -> Gravity.CENTER
+            else -> Gravity.RIGHT
+        }
+        quoteObject.quoteAlign = align
+    }
+
+    // change author alignment
+    private fun changeAuthorAlignment(align: Int) {
+        val params = authorCard.layoutParams as RelativeLayout.LayoutParams
+        params.addRule(
+                when (align) {
+                    0 -> RelativeLayout.ALIGN_PARENT_LEFT
+                    1 -> RelativeLayout.CENTER_HORIZONTAL
+                    else -> RelativeLayout.ALIGN_PARENT_RIGHT
+                }
+        )
+        authorCard.layoutParams = params
+        quoteObject.authorAlign = align
+    }
+
+    // change gradient angle
+    private fun gradientAngle(angle: Float) {
+        gradient.setGradient(quoteObject.gradient, 0,angle)
+        blurMask.setGradient(quoteObject.gradient, 0,angle)
+        quoteObject.angle = angle
+    }
+
     // change gradient design
     private fun changeGradient() {
         val colors = F.randomGradient().toIntArray()
         val angle = (0..180).random().toFloat()
-        RevelyGradient.linear().colors(colors).angle(angle).onBackgroundOf(gradient)
-        RevelyGradient.linear().colors(colors).angle(angle).onBackgroundOf(blurMask)
+        gradient.setGradient(colors, 0,angle)
+        blurMask.setGradient(colors, 0,angle)
+
+        quoteObject.gradient = colors
+        quoteObject.angle = angle
     }
 
     // change gradient author
     private fun changeGradientAuthor() {
-        RevelyGradient.linear().colors(F.randomGradient().toIntArray()).onBackgroundOf(authorLayout)
+        val colors = F.randomGradient().toIntArray()
+        authorLayout.setGradient(colors)
+        quoteObject.authorGradient = colors
     }
 
     // change image
@@ -210,6 +235,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         ImageHandler.getBitmap(bitmap, this) {
             if (it != null) {
                 bitmap = it
+                quoteObject.image = it
                 background.setImageBitmap(it)
                 setBackground()
             } else

@@ -52,20 +52,13 @@ OR PERFORMANCE OF THIS SOFTWARE.
             app:autoSizeTextType="uniform" />
 
         <!--Author-->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/authorCard"
+        <FrameLayout
+            android:id="@+id/authorLayout"
             android:layout_width="wrap_content"
             android:layout_height="32dp"
             android:layout_below="@id/quote"
             android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            app:cardCornerRadius="16dp">
-
-            <FrameLayout
-                android:background="@drawable/bg_round_corners"
-                android:id="@+id/authorLayout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+            android:layout_marginRight="16dp">
 
             <TextView
                 android:id="@+id/author"
@@ -78,7 +71,7 @@ OR PERFORMANCE OF THIS SOFTWARE.
                 android:text="Hello World"
                 android:textColor="@color/white" />
 
-        </com.google.android.material.card.MaterialCardView>
+        </FrameLayout>
 
     </RelativeLayout>
 </FrameLayout>

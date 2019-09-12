@@ -17,6 +17,7 @@ package org.sourcei.kowts.utils.functions
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -45,6 +46,7 @@ import java.security.MessageDigest
  *
  * @note Created on 2019-08-20 by Saksham
  * @note Updates :
+ *  Saksham - 2019 09 12 - master - set gradient on view
  */
 
 // int color to hexa string
@@ -76,6 +78,26 @@ fun View.setParams(width: Int, height: Int) {
         layoutParams = RelativeLayout.LayoutParams(width, height)
     if (parent is LinearLayout)
         layoutParams = LinearLayout.LayoutParams(width, height)
+}
+
+// set gradient on view
+fun View.setGradient(colors: IntArray, radius: Int = 0, angle: Float = 0F) {
+
+    val bbg = if (background != null)
+        background.current as GradientDrawable
+    else
+        GradientDrawable()
+
+    bbg.cornerRadius = F.dpToPx(radius, context).toFloat()
+    bbg.colors = colors
+
+    bbg.orientation = when (angle) {
+        45f -> GradientDrawable.Orientation.BL_TR
+        90f -> GradientDrawable.Orientation.BOTTOM_TOP
+        135f -> GradientDrawable.Orientation.BR_TL
+        else -> GradientDrawable.Orientation.LEFT_RIGHT
+    }
+    background = bbg
 }
 
 // open activity
@@ -202,11 +224,11 @@ fun SharedPreferences.putAny(name: String, any: Any) {
     when (any) {
         is String -> edit().putString(name, any).apply()
         is Int -> edit().putInt(name, any).apply()
-        is Boolean -> edit().putBoolean(name,any).apply()
+        is Boolean -> edit().putBoolean(name, any).apply()
     }
 }
 
-fun SharedPreferences.remove(name:String){
+fun SharedPreferences.remove(name: String) {
     edit().remove(name).apply()
 }
 
