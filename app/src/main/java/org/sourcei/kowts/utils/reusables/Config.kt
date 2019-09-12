@@ -24,3 +24,4 @@ package org.sourcei.kowts.utils.reusables
  * @note Updates :
  */
 val Paper by lazy { io.paperdb.Paper.book() }
+val Angles = listOf(0, 45, 90, 135, 180)

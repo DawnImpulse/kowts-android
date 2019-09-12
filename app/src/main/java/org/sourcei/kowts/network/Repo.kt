@@ -14,8 +14,8 @@
  **/
 package org.sourcei.kowts.network
 
-import org.sourcei.kowts.ui.pojo.ListQuotes
-import org.sourcei.kowts.ui.pojo.PojoQuotes
+import org.sourcei.kowts.utils.pojo.ListQuotes
+import org.sourcei.kowts.utils.pojo.PojoQuotes
 import org.sourcei.kowts.utils.handler.ErrorHandler
 import retrofit2.Call
 import retrofit2.Callback

@@ -30,9 +30,15 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.sourcei.android.permissions.Permissions
 import org.sourcei.kowts.R
-import org.sourcei.kowts.utils.functions.*
+import org.sourcei.kowts.utils.functions.F
+import org.sourcei.kowts.utils.functions.gone
+import org.sourcei.kowts.utils.functions.show
+import org.sourcei.kowts.utils.functions.toast
 import org.sourcei.kowts.utils.handler.ImageHandler
 import org.sourcei.kowts.utils.handler.StorageHandler
+import org.sourcei.kowts.utils.pojo.ObjectQuote
+import org.sourcei.kowts.utils.reusables.ALIGN_LEFT
+import org.sourcei.kowts.utils.reusables.Angles
 import java.io.File
 
 /**
@@ -46,45 +52,26 @@ import java.io.File
  *  Saksham - 2019 08 27 - master - random alignment
  *  Saksham - 2019 09 05 - master - handling button clicks
  *  Saksham - 2019 09 07 - master - multiple quote handling
+ *  Saksham - 2019 09 12 - master - quote additional properties
  */
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     var bitmap: Bitmap? = null
+    lateinit var quoteObject: ObjectQuote
 
     // on create
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        setFab()
         getRandomQuote()
 
-        // click listeners
-        //settings.setOnClickListener(this)
         refresh.setOnClickListener(this)
         download.setOnClickListener(this)
-        /*changeGradient.setOnClickListener(this)
-        changeAuthor.setOnClickListener(this)
-        changeImage.setOnClickListener(this)
-        share.setOnClickListener(this)*/
     }
 
     // button click handling
     override fun onClick(v: View) {
         when (v.id) {
-
-            /* settings.id -> {
-             }
-
-             refresh.id -> getRandomQuote()
-             changeGradient.id -> changeGradient()
-             changeAuthor.id -> changeGradientAuthor()
-             changeImage.id -> changeImage()
-
-             share.id -> {
-             }
-
-             download.id -> {
-             }*/
 
             refresh.id -> getRandomQuote()
 
@@ -95,8 +82,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     }
                     r?.let {
                         GlobalScope.launch {
-                            val b = F.generateBitmap2(this@MainActivity, bitmap!!)
-                            val file = File(Environment.getExternalStorageDirectory().path, "abcdefg.jpg")
+                            val b = F.generateBitmap(this@MainActivity, quoteObject)
+                            val file =
+                                    File(Environment.getExternalStorageDirectory().path, "abcdefg.jpg")
                             StorageHandler.storeBitmapInFile(this@MainActivity, b, file)
                             runOnUiThread {
                                 toast(file.toString())
@@ -117,21 +105,28 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         F.getQuote(this) { pojo ->
             if (pojo != null) {
-                logd(pojo)
+
                 setDimensions(F.displayDimensions(this))
                 ImageHandler.getBitmap(bitmap, this) {
                     if (it != null) {
 
+                        // get random angles & gradient colors
+                        val colors = F.randomGradient().toIntArray()
+                        val colorsAuthor = F.randomGradient().toIntArray()
+                        val angle = Angles.random().toFloat()
+
+                        // create quote object
+                        quoteObject = ObjectQuote(pojo.quote, colors, angle, pojo.author, colorsAuthor, it, ALIGN_LEFT, ALIGN_LEFT)
+
+                        // set details
                         bitmap = it
                         background.setImageBitmap(it)
                         setBackground()
 
-                        val colors = F.randomGradient().toIntArray()
-                        val angle = (0..180).random().toFloat()
                         RevelyGradient.linear().colors(colors).angle(angle).onBackgroundOf(gradient)
                         RevelyGradient.linear().colors(colors).angle(angle).onBackgroundOf(blurMask)
-                        RevelyGradient.linear().colors(F.randomGradient().toIntArray())
-                                .onBackgroundOf(authorLayout)
+                        RevelyGradient.linear().colors(colorsAuthor).onBackgroundOf(authorLayout)
+
                         quote.text = pojo.quote
                         author.text = pojo.author
 
@@ -158,7 +153,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val params = RelativeLayout.LayoutParams(x, y)
         params.addRule(RelativeLayout.CENTER_HORIZONTAL)
         params.topMargin = (point.y - y) / 4
-        //params.addRule(RelativeLayout.CENTER_VERTICAL)
         card.layoutParams = params
 
 
@@ -180,35 +174,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         // random alignment
         val random = (0..2).random()
-        when (random) {
-            // left
-            0 -> {
-                paramsNA.addRule(RelativeLayout.ALIGN_PARENT_LEFT)
+        paramsNA.addRule(RelativeLayout.ALIGN_PARENT_LEFT)
 
-                // set alignment
-                authorCard.layoutParams = paramsNA
-                quote.layoutParams = paramsNQ
-                quote.gravity = Gravity.LEFT
-            }
-            // center
-            1 -> {
-                paramsNA.addRule(RelativeLayout.CENTER_HORIZONTAL)
-
-                // set alignment
-                authorCard.layoutParams = paramsNA
-                quote.layoutParams = paramsNQ
-                quote.gravity = Gravity.CENTER
-            }
-            // right
-            2 -> {
-                paramsNA.addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
-
-                // set alignment
-                authorCard.layoutParams = paramsNA
-                quote.layoutParams = paramsNQ
-                quote.gravity = Gravity.RIGHT
-            }
-        }
+        // set alignment
+        authorCard.layoutParams = paramsNA
+        quote.layoutParams = paramsNQ
+        quote.gravity = Gravity.LEFT
     }
 
     // set background
@@ -218,12 +189,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 .sampling(1)
                 .from(bitmap)
                 .into(blurBg)
-    }
-
-    // set fab
-    private fun setFab() {
-        val colors = F.randomGradient().toIntArray()
-        //RevelyGradient.linear().colors(colors).onBackgroundOf(fab)
     }
 
     // change gradient design

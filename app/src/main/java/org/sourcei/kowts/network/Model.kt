@@ -15,7 +15,7 @@
 package org.sourcei.kowts.network
 
 import androidx.appcompat.app.AppCompatActivity
-import org.sourcei.kowts.ui.pojo.PojoQuotes
+import org.sourcei.kowts.utils.pojo.PojoQuotes
 import org.sourcei.kowts.utils.reusables.Lifecycle
 
 /**

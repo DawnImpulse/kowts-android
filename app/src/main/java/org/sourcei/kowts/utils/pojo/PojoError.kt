@@ -12,7 +12,9 @@
  * WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
  * OR PERFORMANCE OF THIS SOFTWARE.
  **/
-package org.sourcei.kowts.utils.reusables
+package org.sourcei.kowts.utils.pojo
+
+import com.google.gson.annotations.SerializedName
 
 /**
  * @info -
@@ -23,10 +25,9 @@ package org.sourcei.kowts.utils.reusables
  * @note Created on 2019-08-20 by Saksham
  * @note Updates :
  */
-
-const val X_API_KEY = "x-api-key"
-const val QUOTES = "quotes"
-
-const val ALIGN_LEFT = 0
-const val ALIGN_CENTER = 1
-const val ALIGN_RIGHT = 2
+data class PojoError(
+    @SerializedName("success") val success: Boolean = false,
+    @SerializedName("errorCode") val errorCode: Int = 0,
+    @SerializedName("errorType") val errorType: String = "",
+    @SerializedName("errorMessage") val errorMessage: String = ""
+)

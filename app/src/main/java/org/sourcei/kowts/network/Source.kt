@@ -15,7 +15,7 @@
 package org.sourcei.kowts.network
 
 import org.sourcei.kowts.BuildConfig
-import org.sourcei.kowts.ui.pojo.ListQuotes
+import org.sourcei.kowts.utils.pojo.ListQuotes
 import org.sourcei.kowts.utils.reusables.X_API_KEY
 import retrofit2.Call
 import retrofit2.http.GET

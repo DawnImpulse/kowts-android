@@ -12,9 +12,9 @@
  * WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
  * OR PERFORMANCE OF THIS SOFTWARE.
  **/
-package org.sourcei.kowts.ui.pojo
+package org.sourcei.kowts.utils.pojo
 
-import com.google.gson.annotations.SerializedName
+import android.graphics.Bitmap
 
 /**
  * @info -
@@ -22,15 +22,16 @@ import com.google.gson.annotations.SerializedName
  * @author - Saksham
  * @note Last Branch Update - master
  *
- * @note Created on 2019-08-20 by Saksham
+ * @note Created on 2019-09-12 by Saksham
  * @note Updates :
  */
-data class PojoQuotes(
-    @SerializedName("author") val author: String,
-    @SerializedName("qid") val qid: String,
-    @SerializedName("quote") val quote: String
-)
-
-data class ListQuotes(
-    @SerializedName("details") val details: List<PojoQuotes>
+data class ObjectQuote (
+    var quote:String,
+    var gradient: IntArray,
+    var angle:Float,
+    var author:String,
+    var authorGradient:IntArray,
+    var image: Bitmap,
+    var quoteAlign:Int,
+    var authorAlign:Int
 )

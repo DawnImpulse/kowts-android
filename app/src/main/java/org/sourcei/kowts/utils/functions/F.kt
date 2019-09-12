@@ -34,7 +34,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.sourcei.kowts.R
 import org.sourcei.kowts.network.Model
-import org.sourcei.kowts.ui.pojo.PojoQuotes
+import org.sourcei.kowts.utils.pojo.ObjectQuote
+import org.sourcei.kowts.utils.pojo.PojoQuotes
 import org.sourcei.kowts.utils.reusables.Paper
 import org.sourcei.kowts.utils.reusables.QUOTES
 
@@ -52,6 +53,15 @@ import org.sourcei.kowts.utils.reusables.QUOTES
  * Saksham - 2019 09 11 - master - generate quote bitmap for storage
  */
 object F {
+
+    private fun getBitmapFromView(view: View): Bitmap {
+
+        val bitmap = Bitmap.createBitmap(view.measuredWidth, view.measuredHeight, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        view.layout(0, 0, view.measuredWidth, view.measuredHeight)
+        view.draw(canvas)
+        return bitmap
+    }
 
     // Generating random color
     private fun randomColor(): String {
@@ -140,9 +150,8 @@ object F {
         }
     }
 
-
-    //
-    fun generateBitmap2(context: Context, bitmap: Bitmap): Bitmap {
+    // generate quote bitmap
+    fun generateBitmap(context: Context, quoteObject:ObjectQuote): Bitmap {
         val layout = LayoutInflater.from(context).inflate(R.layout.inflator_quote_empty, null)
         val card = layout.card
         val quote = layout.quote
@@ -179,7 +188,7 @@ object F {
 
 
         // random alignment
-        val random = (0..2).random()
+        val random = 0
         when (random) {
             // left
             0 -> {
@@ -214,13 +223,11 @@ object F {
         layout.measure(View.MeasureSpec.makeMeasureSpec(x, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(y, View.MeasureSpec.EXACTLY))
         layout.layout(0, 0, layout.measuredWidth, layout.measuredHeight)
 
-        image.setImageBitmap(bitmap)
-        authorText.text = "Hello World"
-        quote.text = "Hello my world is very AWESOME !!!"
+        image.setImageBitmap(quoteObject.image)
+        authorText.text = quoteObject.author
+        quote.text = quoteObject.quote
 
-        val colors = randomGradient().toIntArray()
-        val angle = (0..180).random().toFloat()
-        RevelyGradient.linear().colors(colors).angle(angle).onBackgroundOf(gradient)
+        RevelyGradient.linear().colors(quoteObject.gradient).angle(quoteObject.angle).onBackgroundOf(gradient)
 
         val bbg = authorLayout.background.current as GradientDrawable
         bbg.cornerRadius = dpToPx(16, context).toFloat()
@@ -230,14 +237,5 @@ object F {
 
 
         return getBitmapFromView(layout)
-    }
-
-    fun getBitmapFromView(view: View): Bitmap {
-
-        val bitmap = Bitmap.createBitmap(view.measuredWidth, view.measuredHeight, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(bitmap)
-        view.layout(0, 0, view.measuredWidth, view.measuredHeight)
-        view.draw(canvas)
-        return bitmap
     }
 }

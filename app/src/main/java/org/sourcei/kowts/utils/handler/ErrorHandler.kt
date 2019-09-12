@@ -15,7 +15,7 @@
 package org.sourcei.kowts.utils.handler
 
 import org.sourcei.kowts.network.RetroApiClient
-import org.sourcei.kowts.ui.pojo.PojoError
+import org.sourcei.kowts.utils.pojo.PojoError
 import retrofit2.Response
 
 /**
