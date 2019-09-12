@@ -18,6 +18,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Point
+import android.graphics.drawable.GradientDrawable
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -220,16 +221,20 @@ object F {
         val colors = randomGradient().toIntArray()
         val angle = (0..180).random().toFloat()
         RevelyGradient.linear().colors(colors).angle(angle).onBackgroundOf(gradient)
-        RevelyGradient.linear().colors(randomGradient().toIntArray()).onBackgroundOf(authorLayout)
+
+        val bbg = authorLayout.background.current as GradientDrawable
+        bbg.cornerRadius = dpToPx(16, context).toFloat()
+        bbg.colors = randomGradient().toIntArray()
+        bbg.orientation = GradientDrawable.Orientation.LEFT_RIGHT
+        authorLayout.background = bbg
+
 
         return getBitmapFromView(layout)
     }
 
     fun getBitmapFromView(view: View): Bitmap {
-        //view.measure(0,View.MeasureSpec.UNSPECIFIED)
 
-        val bitmap = Bitmap.createBitmap(view.measuredWidth, view.measuredHeight,
-                Bitmap.Config.ARGB_8888)
+        val bitmap = Bitmap.createBitmap(view.measuredWidth, view.measuredHeight, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
         view.layout(0, 0, view.measuredWidth, view.measuredHeight)
         view.draw(canvas)
