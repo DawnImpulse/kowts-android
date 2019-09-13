@@ -49,6 +49,7 @@ import java.io.File
  *  Saksham - 2019 09 05 - master - handling button clicks
  *  Saksham - 2019 09 07 - master - multiple quote handling
  *  Saksham - 2019 09 12 - master - quote additional properties
+ *  Saksham - 2019 09 13 - master - quote & author alignment
  */
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     var bitmap: Bitmap? = null
@@ -125,6 +126,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         quote.text = pojo.quote
                         author.text = pojo.author
 
+                        // change alignment
+                        changeAlignment((0..2).random())
+                        changeAuthorAlignment((0..2).random())
+
                         card.show()
                     } else
                         toast("error fetching quote image")
@@ -166,7 +171,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         paramsNA.setMargins(margin, 0, margin, margin)
         paramsNA.addRule(RelativeLayout.BELOW, R.id.quote)
 
-        // set alignment
+        // set params
         authorCard.layoutParams = paramsNA
         quote.layoutParams = paramsNQ
     }
@@ -193,21 +198,25 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     // change author alignment
     private fun changeAuthorAlignment(align: Int) {
         val params = authorCard.layoutParams as RelativeLayout.LayoutParams
-        params.addRule(
-                when (align) {
-                    0 -> RelativeLayout.ALIGN_PARENT_LEFT
-                    1 -> RelativeLayout.CENTER_HORIZONTAL
-                    else -> RelativeLayout.ALIGN_PARENT_RIGHT
-                }
-        )
+
+        params.removeRule(RelativeLayout.ALIGN_PARENT_LEFT)
+        params.removeRule(RelativeLayout.CENTER_HORIZONTAL)
+        params.removeRule(RelativeLayout.ALIGN_PARENT_RIGHT)
+
+        when (align) {
+            0 -> params.addRule(RelativeLayout.ALIGN_PARENT_LEFT)
+            1 -> params.addRule(RelativeLayout.CENTER_HORIZONTAL)
+            2 -> params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
+        }
+
         authorCard.layoutParams = params
         quoteObject.authorAlign = align
     }
 
     // change gradient angle
     private fun gradientAngle(angle: Float) {
-        gradient.setGradient(quoteObject.gradient, 0,angle)
-        blurMask.setGradient(quoteObject.gradient, 0,angle)
+        gradient.setGradient(quoteObject.gradient, 0, angle)
+        blurMask.setGradient(quoteObject.gradient, 0, angle)
         quoteObject.angle = angle
     }
 
@@ -215,8 +224,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun changeGradient() {
         val colors = F.randomGradient().toIntArray()
         val angle = (0..180).random().toFloat()
-        gradient.setGradient(colors, 0,angle)
-        blurMask.setGradient(colors, 0,angle)
+        gradient.setGradient(colors, 0, angle)
+        blurMask.setGradient(colors, 0, angle)
 
         quoteObject.gradient = colors
         quoteObject.angle = angle

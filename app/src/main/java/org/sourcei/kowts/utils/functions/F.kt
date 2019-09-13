@@ -49,13 +49,13 @@ import org.sourcei.kowts.utils.reusables.QUOTES
  * Saksham - 2019 09 06 - master - compare bitmap
  * Saksham - 2019 09 07 - master - handing of multiple quotes
  * Saksham - 2019 09 11 - master - generate quote bitmap for storage
+ * Saksham - 2019 09 13 - master - generate quote alignment
  */
 object F {
 
     private fun getBitmapFromView(view: View): Bitmap {
 
-        val bitmap =
-                Bitmap.createBitmap(view.measuredWidth, view.measuredHeight, Bitmap.Config.ARGB_8888)
+        val bitmap = Bitmap.createBitmap(view.measuredWidth, view.measuredHeight, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
         view.layout(0, 0, view.measuredWidth, view.measuredHeight)
         view.draw(canvas)
@@ -64,8 +64,7 @@ object F {
 
     // Generating random color
     private fun randomColor(): String {
-        val chars =
-                listOf("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F")
+        val chars = listOf("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F")
         var color = "#"
         for (i in 1..6) {
             color += chars[Math.floor(Math.random() * chars.size).toInt()]
@@ -170,7 +169,6 @@ object F {
         val y = x
 
         val params = FrameLayout.LayoutParams(x, y)
-        //params.addRule(RelativeLayout.CENTER_VERTICAL)
         card.layoutParams = params
 
 
@@ -190,44 +188,30 @@ object F {
         paramsNA.addRule(RelativeLayout.BELOW, R.id.quote)
 
 
-        // random alignment
-        val random = 0
-        when (random) {
-            // left
-            0 -> {
-                paramsNA.addRule(RelativeLayout.ALIGN_PARENT_LEFT)
-
-                // set alignment
-                authorLayout.layoutParams = paramsNA
-                quote.layoutParams = paramsNQ
-                quote.gravity = Gravity.LEFT
-            }
-            // center
-            1 -> {
-                paramsNA.addRule(RelativeLayout.CENTER_HORIZONTAL)
-
-                // set alignment
-                authorLayout.layoutParams = paramsNA
-                quote.layoutParams = paramsNQ
-                quote.gravity = Gravity.CENTER
-            }
-            // right
-            2 -> {
-                paramsNA.addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
-
-                // set alignment
-                authorLayout.layoutParams = paramsNA
-                quote.layoutParams = paramsNQ
-                quote.gravity = Gravity.RIGHT
-            }
+        // alignment quote
+        quote.gravity = when (quoteObject.quoteAlign) {
+            0 -> Gravity.LEFT
+            1 -> Gravity.CENTER
+            else -> Gravity.RIGHT
         }
 
+        //alignment author
+        val paramsAN = authorLayout.layoutParams as RelativeLayout.LayoutParams
 
-        layout.measure(View.MeasureSpec.makeMeasureSpec(x, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(y, View.MeasureSpec.EXACTLY))
-        layout.layout(0, 0, layout.measuredWidth, layout.measuredHeight)
+        when (quoteObject.authorAlign) {
+            0 -> paramsAN.addRule(RelativeLayout.ALIGN_PARENT_LEFT)
+            1 -> paramsAN.addRule(RelativeLayout.CENTER_HORIZONTAL)
+            2 -> paramsAN.addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
+        }
+        authorLayout.layoutParams = paramsAN
 
+        // set gradients
         gradient.setGradient(quoteObject.gradient, 0, quoteObject.angle)
         authorLayout.setGradient(quoteObject.authorGradient, 16)
+
+        // prepare for export
+        layout.measure(View.MeasureSpec.makeMeasureSpec(x, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(y, View.MeasureSpec.EXACTLY))
+        layout.layout(0, 0, layout.measuredWidth, layout.measuredHeight)
 
         return getBitmapFromView(layout)
     }
