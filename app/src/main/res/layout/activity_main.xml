@@ -157,6 +157,7 @@ OR PERFORMANCE OF THIS SOFTWARE.
 
     <!--Action Buttons-->
     <LinearLayout
+        android:id="@+id/actions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -201,5 +202,28 @@ OR PERFORMANCE OF THIS SOFTWARE.
                 app:srcCompat="@drawable/vd_download" />
         </FrameLayout>
     </LinearLayout>
+
+    <HorizontalScrollView
+        android:id="@+id/editIcons"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_above="@id/actions"
+        android:layout_marginBottom="16dp"
+        android:clipToPadding="false"
+        android:paddingLeft="16dp">
+
+        <FrameLayout
+            android:id="@+id/angle"
+            android:layout_width="48dp"
+            android:layout_height="48dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/angleI"
+                app:srcCompat="@drawable/vd_gradient_lr"
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
+        </FrameLayout>
+
+    </HorizontalScrollView>
 
 </RelativeLayout>

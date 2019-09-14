@@ -17,6 +17,7 @@ package org.sourcei.kowts.utils.functions
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
@@ -30,6 +31,7 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import org.json.JSONObject
@@ -47,6 +49,7 @@ import java.security.MessageDigest
  * @note Created on 2019-08-20 by Saksham
  * @note Updates :
  *  Saksham - 2019 09 12 - master - set gradient on view
+ *  Saksham - 2019 09 14 - master - use drawable
  */
 
 // int color to hexa string
@@ -116,6 +119,11 @@ fun <T> Context.openActivity(it: Class<T>, bundle: Bundle.() -> Unit = {}) {
 fun Context.hideSoftKeyboard(view: View) {
     val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.hideSoftInputFromWindow(view.windowToken, 0)
+}
+
+// get drawable
+fun Context.useDrawable(id: Int): Drawable? {
+    return ContextCompat.getDrawable(this, id)
 }
 
 // json put params
@@ -235,10 +243,22 @@ fun SharedPreferences.remove(name: String) {
 // log messages
 fun logd(message: Any) {
     if (BuildConfig.DEBUG)
-        Log.d("wallup", "${Exception().stackTrace[1].className.replace("${BuildConfig.APPLICATION_ID}.", "")} :: $message")
+        Log.d(
+            "wallup",
+            "${Exception().stackTrace[1].className.replace(
+                "${BuildConfig.APPLICATION_ID}.",
+                ""
+            )} :: $message"
+        )
 }
 
 fun loge(message: Any) {
     if (BuildConfig.DEBUG)
-        Log.e("wallup", "${Exception().stackTrace[1].className.replace("${BuildConfig.APPLICATION_ID}.", "")} :: $message")
+        Log.e(
+            "wallup",
+            "${Exception().stackTrace[1].className.replace(
+                "${BuildConfig.APPLICATION_ID}.",
+                ""
+            )} :: $message"
+        )
 }

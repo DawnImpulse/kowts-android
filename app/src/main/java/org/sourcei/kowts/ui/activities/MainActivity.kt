@@ -50,6 +50,7 @@ import java.io.File
  *  Saksham - 2019 09 07 - master - multiple quote handling
  *  Saksham - 2019 09 12 - master - quote additional properties
  *  Saksham - 2019 09 13 - master - quote & author alignment
+ *  Saksham - 2019 09 14 - master - edit handling
  */
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     var bitmap: Bitmap? = null
@@ -122,6 +123,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         gradient.setGradient(colors, 0, angle)
                         blurMask.setGradient(colors, 0, angle)
                         authorLayout.setGradient(colorsAuthor, 16)
+                        angleIcon(angle)
 
                         quote.text = pojo.quote
                         author.text = pojo.author
@@ -218,6 +220,20 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         gradient.setGradient(quoteObject.gradient, 0, angle)
         blurMask.setGradient(quoteObject.gradient, 0, angle)
         quoteObject.angle = angle
+    }
+
+    // gradient angle icon
+    private fun angleIcon(angle: Float) {
+        when (angle) {
+            0f -> angleI.setImageDrawable(useDrawable(R.drawable.vd_gradient_lr))
+            45f -> angleI.setImageDrawable(useDrawable(R.drawable.vd_gradient_bl_tr))
+            90f -> angleI.setImageDrawable(useDrawable(R.drawable.vd_gradient_bt))
+            135f -> angleI.setImageDrawable(useDrawable(R.drawable.vd_gradient_br_tl))
+            180f -> angleI.setImageDrawable(useDrawable(R.drawable.vd_gradient_rl))
+            225f -> angleI.setImageDrawable(useDrawable(R.drawable.vd_gradient_tr_bl))
+            270f -> angleI.setImageDrawable(useDrawable(R.drawable.vd_gradient_tb))
+            315f -> angleI.setImageDrawable(useDrawable(R.drawable.vd_gradient_tl_br))
+        }
     }
 
     // change gradient design
