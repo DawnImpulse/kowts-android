@@ -98,6 +98,11 @@ fun View.setGradient(colors: IntArray, radius: Int = 0, angle: Float = 0F) {
         45f -> GradientDrawable.Orientation.BL_TR
         90f -> GradientDrawable.Orientation.BOTTOM_TOP
         135f -> GradientDrawable.Orientation.BR_TL
+        180f -> GradientDrawable.Orientation.RIGHT_LEFT
+        225f -> GradientDrawable.Orientation.TR_BL
+        270f -> GradientDrawable.Orientation.TOP_BOTTOM
+        315f -> GradientDrawable.Orientation.TL_BR
+        // for 0f
         else -> GradientDrawable.Orientation.LEFT_RIGHT
     }
     background = bbg

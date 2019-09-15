@@ -50,7 +50,7 @@ import java.io.File
  *  Saksham - 2019 09 07 - master - multiple quote handling
  *  Saksham - 2019 09 12 - master - quote additional properties
  *  Saksham - 2019 09 13 - master - quote & author alignment
- *  Saksham - 2019 09 14 - master - edit handling
+ *  Saksham - 2019 09 14 - master - options handling
  */
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     var bitmap: Bitmap? = null
@@ -81,32 +81,72 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
 
+            // change quote
             refresh.id -> {
-                loading = true
-                getRandomQuote()
+                if (!loading) {
+                    loading = true
+                    getRandomQuote()
+                } else
+                    toast("please wait for loading to finish")
             }
 
-            quoteGradient.id -> changeGradient()
-            authorGradient.id -> changeGradientAuthor()
-            changeImage.id -> changeImage()
+            // quote gradient
+            quoteGradient.id -> {
+                if (!loading)
+                    changeGradient()
+                else
+                    toast("please wait for loading to finish")
+            }
+
+            // author gradient
+            authorGradient.id -> {
+                if (!loading)
+                    changeGradientAuthor()
+                else
+                    toast("please wait for loading to finish")
+            }
+
+            // change image
+            changeImage.id -> {
+                if (!loading)
+                    changeImage()
+                else
+                    toast("please wait for loading to finish")
+            }
+
+            // align quote
             quoteAlign.id -> {
                 if (!loading) {
                     changeAlignment((quoteObject.quoteAlign + 1) % 3)
-                }
+                } else
+                    toast("please wait for loading")
             }
+
+            // align author
             authorAlign.id -> {
                 if (!loading) {
                     changeAuthorAlignment((quoteObject.authorAlign + 1) % 3)
-                }
+                } else
+                    toast("please wait for loading")
             }
-            //authorAlign.id -> changeAuthorAlignment()
-            //angle.id -> angleIcon()
+
+            // change gradient angle
+            angle.id -> {
+                if (!loading) {
+                    gradientAngle((quoteObject.angle + 45) % 360)
+                } else
+                    toast("please wait for loading")
+            }
+
+            // edit button press
             edit.id -> {
                 if (options.visibility == View.VISIBLE)
                     options.gone()
                 else
                     options.show()
             }
+
+            // download button press
             download.id -> {
                 Permissions.askWriteExternalStoragePermission(this) { e, r ->
                     e?.let {
@@ -168,14 +208,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         changeAuthorAlignment((0..2).random())
 
                         card.show()
-                    } else
+                    } else {
                         toast("error fetching quote image")
+                        loading = false
+                    }
 
                     progress.gone()
                 }
             } else {
                 toast("error fetching quote")
                 progress.gone()
+                loading = false
             }
         }
     }
@@ -273,6 +316,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         gradient.setGradient(quoteObject.gradient, 0, angle)
         blurMask.setGradient(quoteObject.gradient, 0, angle)
         quoteObject.angle = angle
+        angleIcon(angle)
     }
 
     // gradient angle icon
@@ -292,12 +336,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     // change gradient design
     private fun changeGradient() {
         val colors = F.randomGradient().toIntArray()
-        val angle = (0..180).random().toFloat()
+        val angle = quoteObject.angle
         gradient.setGradient(colors, 0, angle)
         blurMask.setGradient(colors, 0, angle)
 
         quoteObject.gradient = colors
-        quoteObject.angle = angle
     }
 
     // change gradient author
@@ -309,15 +352,19 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     // change image
     private fun changeImage() {
+        loading = true
         progressImage.show()
         ImageHandler.getBitmap(bitmap, this) {
             if (it != null) {
+                loading = false
                 bitmap = it
                 quoteObject.image = it
                 background.setImageBitmap(it)
                 setBackground()
-            } else
+            } else {
+                loading = false
                 toast("error fetching quote image")
+            }
 
             progressImage.gone()
         }
