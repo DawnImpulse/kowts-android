@@ -47,9 +47,9 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
     implementation 'com.jakewharton.rxrelay2:rxrelay:2.1.0' //rx relay
     implementation 'org.sourcei.android:permissions:1.0.1' //permissions
-    implementation 'co.revely:gradient:1.0.1' // gradient
     implementation 'jp.wasabeef:blurry:3.0.0' //blur library
     implementation 'io.paperdb:paperdb:2.6' // paper db
+    implementation 'com.balysv:material-ripple:1.0.2' // ripple library
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

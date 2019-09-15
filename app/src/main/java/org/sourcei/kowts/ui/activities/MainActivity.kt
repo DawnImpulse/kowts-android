@@ -54,6 +54,7 @@ import java.io.File
  */
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     var bitmap: Bitmap? = null
+    var loading = false
     lateinit var quoteObject: ObjectQuote
 
     // on create
@@ -80,11 +81,24 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
 
-            refresh.id -> getRandomQuote()
+            refresh.id -> {
+                loading = true
+                getRandomQuote()
+            }
+
             quoteGradient.id -> changeGradient()
             authorGradient.id -> changeGradientAuthor()
             changeImage.id -> changeImage()
-            //quoteAlign.id -> changeAlignment()
+            quoteAlign.id -> {
+                if (!loading) {
+                    changeAlignment((quoteObject.quoteAlign + 1) % 3)
+                }
+            }
+            authorAlign.id -> {
+                if (!loading) {
+                    changeAuthorAlignment((quoteObject.authorAlign + 1) % 3)
+                }
+            }
             //authorAlign.id -> changeAuthorAlignment()
             //angle.id -> angleIcon()
             edit.id -> {
@@ -125,6 +139,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
                 ImageHandler.getBitmap(bitmap, this) {
                     if (it != null) {
+
+                        loading = false
 
                         // get random angles & gradient colors
                         val colors = F.randomGradient().toIntArray()
@@ -209,9 +225,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     // change quote alignment
     private fun changeAlignment(align: Int) {
         quote.gravity = when (align) {
-            0 -> Gravity.LEFT
-            1 -> Gravity.CENTER
-            else -> Gravity.RIGHT
+            0 -> {
+                quoteAlignI.setImageDrawable(useDrawable(R.drawable.vd_align_left))
+                Gravity.LEFT
+            }
+            1 -> {
+                quoteAlignI.setImageDrawable(useDrawable(R.drawable.vd_align_center))
+                Gravity.CENTER
+            }
+            else -> {
+                quoteAlignI.setImageDrawable(useDrawable(R.drawable.vd_align_right))
+                Gravity.RIGHT
+            }
         }
         quoteObject.quoteAlign = align
     }
@@ -225,9 +250,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         params.removeRule(RelativeLayout.ALIGN_PARENT_RIGHT)
 
         when (align) {
-            0 -> params.addRule(RelativeLayout.ALIGN_PARENT_LEFT)
-            1 -> params.addRule(RelativeLayout.CENTER_HORIZONTAL)
-            2 -> params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
+            0 -> {
+                params.addRule(RelativeLayout.ALIGN_PARENT_LEFT)
+                authorAlignI.setImageDrawable(useDrawable(R.drawable.vd_align_left))
+            }
+            1 -> {
+                params.addRule(RelativeLayout.CENTER_HORIZONTAL)
+                authorAlignI.setImageDrawable(useDrawable(R.drawable.vd_align_center))
+            }
+            2 -> {
+                params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
+                authorAlignI.setImageDrawable(useDrawable(R.drawable.vd_align_right))
+            }
         }
 
         authorCard.layoutParams = params
