@@ -205,6 +205,7 @@ OR PERFORMANCE OF THIS SOFTWARE.
 
     <!--Options-->
     <HorizontalScrollView
+        android:visibility="gone"
         android:id="@+id/options"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

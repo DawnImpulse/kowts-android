@@ -66,6 +66,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         refresh.setOnClickListener(this)
         download.setOnClickListener(this)
+        edit.setOnClickListener(this)
+        quoteGradient.setOnClickListener(this)
+        authorGradient.setOnClickListener(this)
+        changeImage.setOnClickListener(this)
+        quoteAlign.setOnClickListener(this)
+        authorAlign.setOnClickListener(this)
+        angle.setOnClickListener(this)
+
     }
 
     // button click handling
@@ -73,7 +81,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         when (v.id) {
 
             refresh.id -> getRandomQuote()
-
+            quoteGradient.id -> changeGradient()
+            authorGradient.id -> changeGradientAuthor()
+            changeImage.id -> changeImage()
+            //quoteAlign.id -> changeAlignment()
+            //authorAlign.id -> changeAuthorAlignment()
+            //angle.id -> angleIcon()
+            edit.id -> {
+                if (options.visibility == View.VISIBLE)
+                    options.gone()
+                else
+                    options.show()
+            }
             download.id -> {
                 Permissions.askWriteExternalStoragePermission(this) { e, r ->
                     e?.let {
