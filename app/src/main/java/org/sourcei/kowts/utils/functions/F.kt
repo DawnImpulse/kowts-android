@@ -165,28 +165,17 @@ object F {
 
         // set dimensions for card
         val point = displayDimensions(context)
-        val x = point.x - dpToPx(32, context)
+        val margin = dpToPx(16, context)
+        val x = point.x
         val y = x
 
         val params = FrameLayout.LayoutParams(x, y)
         card.layoutParams = params
 
 
-        // set dimensions for quote & author layout
-        val margin = dpToPx(16, context)
-
-        // original params
-        val paramsT = quote.layoutParams // original params for quote
-        val paramsA = authorLayout.layoutParams // original params for author
-
         // new params
-        val paramsNQ = RelativeLayout.LayoutParams(paramsT.width, 3 * y / 4)
-        val paramsNA = RelativeLayout.LayoutParams(paramsA.width, paramsA.height)
-
-        paramsNQ.setMargins(margin)
-        paramsNA.setMargins(margin, 0, margin, margin)
-        paramsNA.addRule(RelativeLayout.BELOW, R.id.quote)
-
+        val paramsNQ = RelativeLayout.LayoutParams(x, 3 * y / 4)
+        val paramsNA = RelativeLayout.LayoutParams(authorLayout.layoutParams.width, authorLayout.layoutParams.height)
 
         // alignment quote
         quote.gravity = when (quoteObject.quoteAlign) {
@@ -195,15 +184,20 @@ object F {
             else -> Gravity.RIGHT
         }
 
-        //alignment author
-        val paramsAN = authorLayout.layoutParams as RelativeLayout.LayoutParams
-
+        // align author
         when (quoteObject.authorAlign) {
-            0 -> paramsAN.addRule(RelativeLayout.ALIGN_PARENT_LEFT)
-            1 -> paramsAN.addRule(RelativeLayout.CENTER_HORIZONTAL)
-            2 -> paramsAN.addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
+            0 -> paramsNA.addRule(RelativeLayout.ALIGN_PARENT_LEFT)
+            1 -> paramsNA.addRule(RelativeLayout.CENTER_HORIZONTAL)
+            2 -> paramsNA.addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
         }
-        authorLayout.layoutParams = paramsAN
+
+        // set new params
+        paramsNQ.setMargins(margin)
+        paramsNA.setMargins(margin, 0, margin, margin)
+        paramsNA.addRule(RelativeLayout.BELOW, R.id.quote)
+
+        quote.layoutParams = paramsNQ
+        authorLayout.layoutParams = paramsNA
 
         // set gradients
         gradient.setGradient(quoteObject.gradient, 0, quoteObject.angle)

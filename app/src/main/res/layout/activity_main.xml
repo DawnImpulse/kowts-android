@@ -14,8 +14,8 @@ OR PERFORMANCE OF THIS SOFTWARE.
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="@color/black"
     android:layout_height="match_parent"
+    android:background="@color/black"
     android:orientation="vertical">
 
     <!--Blur Layout-->
@@ -205,164 +205,107 @@ OR PERFORMANCE OF THIS SOFTWARE.
     </LinearLayout>
 
     <!--Options-->
-    <HorizontalScrollView
-        android:visibility="gone"
+    <LinearLayout
         android:id="@+id/options"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/actions"
         android:layout_marginBottom="48dp"
-        android:clipToPadding="false"
-        android:paddingLeft="16dp"
-        android:paddingRight="32dp"
-        android:scrollbarThumbHorizontal="@null">
+        android:visibility="gone">
 
-        <LinearLayout
+        <!--Quote Gradient-->
+        <FrameLayout
+            android:id="@+id/quoteGradient"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-            <!--Quote Gradient-->
-            <LinearLayout
-                android:id="@+id/quoteGradient"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:orientation="vertical">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/vd_gradient" />
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_gravity="center"
-                    app:srcCompat="@drawable/vd_gradient" />
+        </FrameLayout>
 
-               <!-- <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Quote\nGradient"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textSize="8sp" />-->
-            </LinearLayout>
+        <!--Author Gradient-->
+        <FrameLayout
+            android:id="@+id/authorGradient"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-            <!--Author Gradient-->
-            <LinearLayout
-                android:id="@+id/authorGradient"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="32dp"
-                android:orientation="vertical">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/vd_person" />
+        </FrameLayout>
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_gravity="center"
-                    app:srcCompat="@drawable/vd_person" />
+        <!--Change Image-->
+        <FrameLayout
+            android:id="@+id/changeImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-               <!-- <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Author\nGradient"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textSize="8sp" />-->
-            </LinearLayout>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/vd_image" />
+        </FrameLayout>
 
-            <!--Change Image-->
-            <LinearLayout
-                android:id="@+id/changeImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="32dp"
-                android:orientation="vertical">
+        <!--Quote Align-->
+        <FrameLayout
+            android:id="@+id/quoteAlign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_gravity="center"
-                    app:srcCompat="@drawable/vd_image" />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/quoteAlignI"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/vd_align_left" />
+        </FrameLayout>
 
-               <!-- <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Change\nImage"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textSize="8sp" />-->
-            </LinearLayout>
+        <!--Author Align-->
+        <LinearLayout
+            android:id="@+id/authorAlign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-            <!--Quote Align-->
-            <LinearLayout
-                android:id="@+id/quoteAlign"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="32dp"
-                android:orientation="vertical">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/quoteAlignI"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_gravity="center"
-                    app:srcCompat="@drawable/vd_align_left" />
-
-                <!--<TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Quote\nAlign"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textSize="8sp" />-->
-            </LinearLayout>
-
-            <!--Author Align-->
-            <LinearLayout
-                android:id="@+id/authorAlign"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="32dp"
-                android:orientation="vertical">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/authorAlignI"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_gravity="center"
-                    app:srcCompat="@drawable/vd_align_right" />
-
-                <!--<TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Author\nAlign"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textSize="8sp" />-->
-            </LinearLayout>
-
-            <!--Gradient Angle-->
-            <LinearLayout
-                android:id="@+id/angle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="32dp"
-                android:orientation="vertical">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/angleI"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_gravity="center"
-                    app:srcCompat="@drawable/vd_gradient_lr" />
-
-                <!--<TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Gradient\nAngle"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textSize="8sp" />-->
-            </LinearLayout>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/authorAlignI"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/vd_align_right" />
         </LinearLayout>
 
-    </HorizontalScrollView>
+        <!--Gradient Angle-->
+        <LinearLayout
+            android:id="@+id/angle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/angleI"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/vd_gradient_lr" />
+        </LinearLayout>
+    </LinearLayout>
 
 </RelativeLayout>
