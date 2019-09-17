@@ -49,7 +49,6 @@ dependencies {
     implementation 'org.sourcei.android:permissions:1.0.1' //permissions
     implementation 'jp.wasabeef:blurry:3.0.0' //blur library
     implementation 'io.paperdb:paperdb:2.6' // paper db
-    implementation 'com.balysv:material-ripple:1.0.2' // ripple library
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

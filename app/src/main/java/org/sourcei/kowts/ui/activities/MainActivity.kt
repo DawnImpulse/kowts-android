@@ -51,8 +51,9 @@ import java.io.File
  *  Saksham - 2019 09 12 - master - quote additional properties
  *  Saksham - 2019 09 13 - master - quote & author alignment
  *  Saksham - 2019 09 14 - master - options handling
+ *  Saksham - 2019 09 17 - master - long click information
  */
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClickListener {
     var bitmap: Bitmap? = null
     var loading = false
     lateinit var quoteObject: ObjectQuote
@@ -65,6 +66,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setDimensions(F.displayDimensions(this))
         getRandomQuote()
 
+        // single click
         refresh.setOnClickListener(this)
         download.setOnClickListener(this)
         edit.setOnClickListener(this)
@@ -75,6 +77,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         authorAlign.setOnClickListener(this)
         angle.setOnClickListener(this)
 
+        // long click
+        refresh.setOnLongClickListener(this)
+        download.setOnLongClickListener(this)
+        edit.setOnLongClickListener(this)
+        quoteGradient.setOnLongClickListener(this)
+        authorGradient.setOnLongClickListener(this)
+        changeImage.setOnLongClickListener(this)
+        quoteAlign.setOnLongClickListener(this)
+        authorAlign.setOnLongClickListener(this)
+        angle.setOnLongClickListener(this)
     }
 
     // button click handling
@@ -155,7 +167,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     r?.let {
                         GlobalScope.launch {
                             val b = F.generateBitmap(this@MainActivity, quoteObject)
-                            val file = File(Environment.getExternalStorageDirectory().path, "abcdefg.jpg")
+                            val file =
+                                File(Environment.getExternalStorageDirectory().path, "abcdefg.jpg")
                             StorageHandler.storeBitmapInFile(this@MainActivity, b, file)
                             runOnUiThread {
                                 toast(file.toString())
@@ -166,6 +179,22 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
 
         }
+    }
+
+    // long click info
+    override fun onLongClick(v: View): Boolean {
+        when (v.id) {
+            refresh.id -> toast("fetch a new quote")
+            download.id -> toast("download the current quote on screen")
+            edit.id -> toast("edit the quote layout")
+            quoteGradient.id -> toast("change the background gradient")
+            authorGradient.id -> toast("change the author gradient")
+            changeImage.id -> toast("change background image")
+            quoteAlign.id -> toast("change alignment of quote")
+            authorAlign.id -> toast("change alignment of author")
+            angle.id -> toast("change gradient angle")
+        }
+        return true
     }
 
     // get random quotes
@@ -188,7 +217,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         val angle = Angles.random().toFloat()
 
                         // create quote object
-                        quoteObject = ObjectQuote(pojo.quote, colors, angle, pojo.author, colorsAuthor, it, ALIGN_LEFT, ALIGN_LEFT)
+                        quoteObject = ObjectQuote(
+                            pojo.quote,
+                            colors,
+                            angle,
+                            pojo.author,
+                            colorsAuthor,
+                            it,
+                            ALIGN_LEFT,
+                            ALIGN_LEFT
+                        )
 
                         // set details
                         bitmap = it
@@ -259,10 +297,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     // set background
     private fun setBackground() {
         Blurry.with(this)
-                .async()
-                .sampling(1)
-                .from(bitmap)
-                .into(blurBg)
+            .async()
+            .sampling(1)
+            .from(bitmap)
+            .into(blurBg)
     }
 
     // change quote alignment
