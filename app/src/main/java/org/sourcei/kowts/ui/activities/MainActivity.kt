@@ -168,7 +168,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
                         GlobalScope.launch {
                             val b = F.generateBitmap(this@MainActivity, quoteObject)
                             val file =
-                                File(Environment.getExternalStorageDirectory().path, "abcdefg.jpg")
+                                    File(Environment.getExternalStorageDirectory().path, "abcdefg.jpg")
                             StorageHandler.storeBitmapInFile(this@MainActivity, b, file)
                             runOnUiThread {
                                 toast(file.toString())
@@ -218,14 +218,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
 
                         // create quote object
                         quoteObject = ObjectQuote(
-                            pojo.quote,
-                            colors,
-                            angle,
-                            pojo.author,
-                            colorsAuthor,
-                            it,
-                            ALIGN_LEFT,
-                            ALIGN_LEFT
+                                pojo.quote,
+                                colors,
+                                angle,
+                                pojo.author,
+                                colorsAuthor,
+                                it,
+                                ALIGN_LEFT,
+                                ALIGN_LEFT
                         )
 
                         // set details
@@ -270,8 +270,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
 
         val params = RelativeLayout.LayoutParams(x, y)
         params.addRule(RelativeLayout.CENTER_HORIZONTAL)
-        params.topMargin = (point.y - y) / 4
+        params.addRule(RelativeLayout.CENTER_VERTICAL)
         card.layoutParams = params
+
+        // set bottom margin for options layout
+        val m = (((point.y - x) / 2 - F.dpToPx(40, this)) - F.dpToPx(36, this)) / 2
+        val paramsO = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
+        paramsO.addRule(RelativeLayout.ABOVE, R.id.actions)
+        paramsO.setMargins(0,0,0,m)
+        options.layoutParams = paramsO
 
 
         // set dimensions for quote & author layout
@@ -297,10 +304,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
     // set background
     private fun setBackground() {
         Blurry.with(this)
-            .async()
-            .sampling(1)
-            .from(bitmap)
-            .into(blurBg)
+                .async()
+                .sampling(1)
+                .from(bitmap)
+                .into(blurBg)
     }
 
     // change quote alignment

@@ -69,7 +69,6 @@ OR PERFORMANCE OF THIS SOFTWARE.
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_margin="32dp"
         android:visibility="visible"
         app:cardCornerRadius="12dp">
 
@@ -210,8 +209,8 @@ OR PERFORMANCE OF THIS SOFTWARE.
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/actions"
-        android:layout_marginBottom="48dp"
-        android:visibility="gone">
+        android:visibility="gone"
+        android:layout_marginBottom="48dp">
 
         <!--Quote Gradient-->
         <FrameLayout
