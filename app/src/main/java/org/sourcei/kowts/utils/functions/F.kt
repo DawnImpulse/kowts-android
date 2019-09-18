@@ -27,13 +27,18 @@ import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.toColorInt
 import androidx.core.view.setMargins
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.inflator_quote_empty.view.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.json.JSONArray
 import org.sourcei.kowts.R
 import org.sourcei.kowts.network.Model
+import org.sourcei.kowts.utils.pojo.ObjectGradient
 import org.sourcei.kowts.utils.pojo.ObjectQuote
 import org.sourcei.kowts.utils.pojo.PojoQuotes
+import org.sourcei.kowts.utils.reusables.Gradients
 import org.sourcei.kowts.utils.reusables.Paper
 import org.sourcei.kowts.utils.reusables.QUOTES
 import kotlin.random.Random
@@ -51,13 +56,15 @@ import kotlin.random.Random
  * Saksham - 2019 09 07 - master - handing of multiple quotes
  * Saksham - 2019 09 11 - master - generate quote bitmap for storage
  * Saksham - 2019 09 13 - master - generate quote alignment
- * Saksham - 2019 09 18 - master - shortid
+ * Saksham - 2019 09 18 - master - shortid & gradients
  */
 object F {
 
+    // generate bitmap from view
     private fun getBitmapFromView(view: View): Bitmap {
 
-        val bitmap = Bitmap.createBitmap(view.measuredWidth, view.measuredHeight, Bitmap.Config.ARGB_8888)
+        val bitmap =
+                Bitmap.createBitmap(view.measuredWidth, view.measuredHeight, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
         view.layout(0, 0, view.measuredWidth, view.measuredHeight)
         view.draw(canvas)
@@ -66,7 +73,8 @@ object F {
 
     // Generating random color
     private fun randomColor(): String {
-        val chars = listOf("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F")
+        val chars =
+                listOf("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F")
         var color = "#"
         for (i in 1..6) {
             color += chars[Math.floor(Math.random() * chars.size).toInt()]
@@ -76,7 +84,7 @@ object F {
 
     // Generate random gradient
     fun randomGradient(): List<Int> {
-        val count = 2
+        /*val count = 2
         val angle = (0..180).random()
         val colors = mutableListOf<Int>()
 
@@ -85,8 +93,9 @@ object F {
         }
 
 
-        return colors
+        return colors*/
 
+        return Gradients.random().colors.map { it.toColorInt() }
     }
 
     // convert dp - px
@@ -152,7 +161,7 @@ object F {
 
     // generate quote bitmap
     fun generateBitmap(context: Context, quoteObject: ObjectQuote): Bitmap {
-        val layout = LayoutInflater.from(context).inflate(R.layout.inflator_quote_empty, null)
+        val layout = LayoutInflater.from(context).inflate(org.sourcei.kowts.R.layout.inflator_quote_empty, null)
         val card = layout.card
         val quote = layout.quote
         val authorText = layout.author
@@ -177,7 +186,10 @@ object F {
 
         // new params
         val paramsNQ = RelativeLayout.LayoutParams(x, 3 * y / 4)
-        val paramsNA = RelativeLayout.LayoutParams(authorLayout.layoutParams.width, authorLayout.layoutParams.height)
+        val paramsNA = RelativeLayout.LayoutParams(
+                authorLayout.layoutParams.width,
+                authorLayout.layoutParams.height
+        )
 
         // alignment quote
         quote.gravity = when (quoteObject.quoteAlign) {
@@ -196,7 +208,7 @@ object F {
         // set new params
         paramsNQ.setMargins(margin)
         paramsNA.setMargins(margin, 0, margin, margin)
-        paramsNA.addRule(RelativeLayout.BELOW, R.id.quote)
+        paramsNA.addRule(RelativeLayout.BELOW, org.sourcei.kowts.R.id.quote)
 
         quote.layoutParams = paramsNQ
         authorLayout.layoutParams = paramsNA
@@ -206,7 +218,10 @@ object F {
         authorLayout.setGradient(quoteObject.authorGradient, 16)
 
         // prepare for export
-        layout.measure(View.MeasureSpec.makeMeasureSpec(x, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(y, View.MeasureSpec.EXACTLY))
+        layout.measure(
+                View.MeasureSpec.makeMeasureSpec(x, View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.makeMeasureSpec(y, View.MeasureSpec.EXACTLY)
+        )
         layout.layout(0, 0, layout.measuredWidth, layout.measuredHeight)
 
         return getBitmapFromView(layout)
@@ -219,5 +234,13 @@ object F {
                 .map { Random.nextInt(0, charPool.size) }
                 .map(charPool::get)
                 .joinToString("")
+    }
+
+    // read gradients
+    fun readGradients(context: Context): List<ObjectGradient> {
+        val string = context.resources.openRawResource(R.raw.gradients).bufferedReader().use { it.readText() }
+        val json = JSONArray(string)
+
+        return Gson().fromJson<List<ObjectGradient>>(json.toString(), object : TypeToken<List<ObjectGradient>>() {}.type)!!
     }
 }

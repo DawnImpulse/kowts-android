@@ -384,11 +384,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
     // change gradient design
     private fun changeGradient() {
         val colors = F.randomGradient().toIntArray()
-        val angle = quoteObject.angle
+        val angle = Angles.random().toFloat()
         gradient.setGradient(colors, 0, angle)
         blurMask.setGradient(colors, 0, angle)
 
         quoteObject.gradient = colors
+        gradientAngle(angle)
     }
 
     // change gradient author

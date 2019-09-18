@@ -12,9 +12,7 @@
  * WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
  * OR PERFORMANCE OF THIS SOFTWARE.
  **/
-package org.sourcei.kowts.utils.reusables
-
-import org.sourcei.kowts.utils.pojo.ObjectGradient
+package org.sourcei.kowts.utils.pojo
 
 /**
  * @info -
@@ -22,9 +20,10 @@ import org.sourcei.kowts.utils.pojo.ObjectGradient
  * @author - Saksham
  * @note Last Branch Update - master
  *
- * @note Created on 2019-09-07 by Saksham
+ * @note Created on 2019-09-18 by Saksham
  * @note Updates :
  */
-val Paper by lazy { io.paperdb.Paper.book() }
-val Angles = listOf(0, 45, 90, 135, 180, 225, 270, 315)
-lateinit var Gradients: List<ObjectGradient>
+data class ObjectGradient(
+        val name: String,
+        val colors: List<String>
+)

@@ -16,6 +16,8 @@ package org.sourcei.kowts.ui
 
 import android.app.Application
 import io.paperdb.Paper
+import org.sourcei.kowts.utils.functions.F
+import org.sourcei.kowts.utils.reusables.Gradients
 
 /**
  * @info -
@@ -31,5 +33,7 @@ class App : Application(){
     override fun onCreate() {
         super.onCreate()
         Paper.init(this)
+
+        Gradients = F.readGradients(this)
     }
 }
