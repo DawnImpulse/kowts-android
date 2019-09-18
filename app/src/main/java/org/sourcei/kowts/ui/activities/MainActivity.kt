@@ -17,7 +17,6 @@ package org.sourcei.kowts.ui.activities
 import android.graphics.Bitmap
 import android.graphics.Point
 import android.os.Bundle
-import android.os.Environment
 import android.view.Gravity
 import android.view.View
 import android.widget.RelativeLayout
@@ -35,6 +34,7 @@ import org.sourcei.kowts.utils.handler.StorageHandler
 import org.sourcei.kowts.utils.pojo.ObjectQuote
 import org.sourcei.kowts.utils.reusables.ALIGN_LEFT
 import org.sourcei.kowts.utils.reusables.Angles
+import org.sourcei.kowts.utils.reusables.DEFAULT_DOWNLOAD_PATH
 import java.io.File
 
 /**
@@ -162,16 +162,19 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
             download.id -> {
                 Permissions.askWriteExternalStoragePermission(this) { e, r ->
                     e?.let {
-
+                        toast("Kindly provide storage permission to save Quote")
                     }
                     r?.let {
                         GlobalScope.launch {
+
+                            if (!File(DEFAULT_DOWNLOAD_PATH).exists())
+                                File(DEFAULT_DOWNLOAD_PATH).mkdir()
+
                             val b = F.generateBitmap(this@MainActivity, quoteObject)
-                            val file =
-                                    File(Environment.getExternalStorageDirectory().path, "abcdefg.jpg")
+                            val file = File(File(DEFAULT_DOWNLOAD_PATH), "${F.shortid()}.jpg")
                             StorageHandler.storeBitmapInFile(this@MainActivity, b, file)
                             runOnUiThread {
-                                toast(file.toString())
+                                toast("Quote saved successfully")
                             }
                         }
                     }
@@ -277,7 +280,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
         val m = (((point.y - x) / 2 - F.dpToPx(40, this)) - F.dpToPx(36, this)) / 2
         val paramsO = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
         paramsO.addRule(RelativeLayout.ABOVE, R.id.actions)
-        paramsO.setMargins(0,0,0,m)
+        paramsO.setMargins(0, 0, 0, m)
         options.layoutParams = paramsO
 
 

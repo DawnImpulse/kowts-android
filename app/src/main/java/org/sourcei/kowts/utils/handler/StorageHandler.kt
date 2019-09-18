@@ -17,6 +17,7 @@ package org.sourcei.kowts.utils.handler
 import android.content.Context
 import android.graphics.Bitmap
 import android.media.MediaScannerConnection
+import org.sourcei.kowts.utils.functions.logd
 import java.io.File
 import java.io.FileOutputStream
 
@@ -35,6 +36,7 @@ object StorageHandler {
     fun storeBitmapInFile(context:Context,bitmap: Bitmap, file: File) {
 
         try {
+            logd(file.path)
             val fOut = FileOutputStream(file)
             bitmap.compress(Bitmap.CompressFormat.JPEG, 95, fOut)
             fOut.flush()

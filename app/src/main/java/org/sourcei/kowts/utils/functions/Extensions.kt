@@ -57,6 +57,9 @@ fun Int.toHexa(): String {
     return String.format("#%06X", 0xFFFFFF and this)
 }
 
+
+
+
 // gone view
 fun View.gone() {
     visibility = View.GONE
@@ -108,6 +111,10 @@ fun View.setGradient(colors: IntArray, radius: Int = 0, angle: Float = 0F) {
     background = bbg
 }
 
+
+
+
+
 // open activity
 fun <T> Context.openActivity(it: Class<T>) {
     startActivity(Intent(this, it))
@@ -131,12 +138,46 @@ fun Context.useDrawable(id: Int): Drawable? {
     return ContextCompat.getDrawable(this, id)
 }
 
-// json put params
-fun jsonOf(vararg pairs: Pair<String, Any>) = JSONObject().apply {
-    pairs.forEach {
-        put(it.first, it.second)
+//get display ratio a/b
+fun Context.displayRatio(): Pair<Int, Int> {
+
+    fun calculateHcf(width1: Int, height1: Int): Int {
+        var width = width1
+        var height = height1
+        while (height != 0) {
+            val t = height
+            height = width % height
+            width = t
+        }
+        return width
     }
+
+    val point = F.displayDimensions(this)
+    val hcf = calculateHcf(point.x, point.y)
+
+    return Pair(point.y / hcf, point.x / hcf)
 }
+
+// toast
+fun Context.toast(message: String, length: Int = Toast.LENGTH_SHORT) {
+    Toast.makeText(this, message, length).show()
+}
+
+// debug toast
+fun Context.toastd(message: String, length: Int = Toast.LENGTH_SHORT) {
+    if (BuildConfig.DEBUG)
+        Toast.makeText(this, message, length).show()
+}
+
+// start web
+fun Context.startWeb(url: String) {
+    startActivity(Intent(Intent.ACTION_VIEW, url.toUri()))
+}
+
+
+
+
+
 
 // file path string to uri
 fun String.toFileUri(): Uri {
@@ -174,6 +215,16 @@ fun String.md5(): String {
     return BigInteger(1, md.digest(toByteArray())).toString(16).padStart(32, '0')
 }
 
+//covert to file type
+fun String.toFile(): File {
+    return File(this)
+}
+
+
+
+
+
+
 //convert to content uri
 fun Uri.toContentUri(context: Context): Uri {
     val cr = context.contentResolver
@@ -191,46 +242,11 @@ fun Uri.getMime(context: Context): String? {
     return cr.getType(this)
 }
 
-//get display ratio a/b
-fun Context.displayRatio(): Pair<Int, Int> {
 
-    fun calculateHcf(width1: Int, height1: Int): Int {
-        var width = width1
-        var height = height1
-        while (height != 0) {
-            val t = height
-            height = width % height
-            width = t
-        }
-        return width
-    }
 
-    val point = F.displayDimensions(this)
-    val hcf = calculateHcf(point.x, point.y)
 
-    return Pair(point.y / hcf, point.x / hcf)
-}
 
-// toast
-fun Context.toast(message: String, length: Int = Toast.LENGTH_SHORT) {
-    Toast.makeText(this, message, length).show()
-}
 
-// debug toast
-fun Context.toastd(message: String, length: Int = Toast.LENGTH_SHORT) {
-    if (BuildConfig.DEBUG)
-        Toast.makeText(this, message, length).show()
-}
-
-//covert to file type
-fun String.toFile(): File {
-    return File(this)
-}
-
-// start web
-fun Context.startWeb(url: String) {
-    startActivity(Intent(Intent.ACTION_VIEW, url.toUri()))
-}
 
 // put directly with shared preference object
 fun SharedPreferences.putAny(name: String, any: Any) {
@@ -243,6 +259,17 @@ fun SharedPreferences.putAny(name: String, any: Any) {
 
 fun SharedPreferences.remove(name: String) {
     edit().remove(name).apply()
+}
+
+
+
+
+
+// json put params
+fun jsonOf(vararg pairs: Pair<String, Any>) = JSONObject().apply {
+    pairs.forEach {
+        put(it.first, it.second)
+    }
 }
 
 // log messages

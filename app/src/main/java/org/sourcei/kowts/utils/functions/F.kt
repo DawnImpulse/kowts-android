@@ -36,6 +36,7 @@ import org.sourcei.kowts.utils.pojo.ObjectQuote
 import org.sourcei.kowts.utils.pojo.PojoQuotes
 import org.sourcei.kowts.utils.reusables.Paper
 import org.sourcei.kowts.utils.reusables.QUOTES
+import kotlin.random.Random
 
 
 /**
@@ -50,6 +51,7 @@ import org.sourcei.kowts.utils.reusables.QUOTES
  * Saksham - 2019 09 07 - master - handing of multiple quotes
  * Saksham - 2019 09 11 - master - generate quote bitmap for storage
  * Saksham - 2019 09 13 - master - generate quote alignment
+ * Saksham - 2019 09 18 - master - shortid
  */
 object F {
 
@@ -208,5 +210,14 @@ object F {
         layout.layout(0, 0, layout.measuredWidth, layout.measuredHeight)
 
         return getBitmapFromView(layout)
+    }
+
+    // generate shortid
+    fun shortid(): String {
+        val charPool: List<Char> = ('a'..'z') + ('A'..'Z') + ('0'..'9')
+        return (1..10)
+                .map { Random.nextInt(0, charPool.size) }
+                .map(charPool::get)
+                .joinToString("")
     }
 }

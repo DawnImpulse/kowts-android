@@ -14,6 +14,8 @@
  **/
 package org.sourcei.kowts.utils.reusables
 
+import android.os.Environment
+
 /**
  * @info -
  *
@@ -23,6 +25,8 @@ package org.sourcei.kowts.utils.reusables
  * @note Created on 2019-08-20 by Saksham
  * @note Updates :
  */
+
+val DEFAULT_DOWNLOAD_PATH = "${Environment.getExternalStorageDirectory().path}/Kowts"
 
 const val X_API_KEY = "x-api-key"
 const val QUOTES = "quotes"

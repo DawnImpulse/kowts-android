@@ -46,12 +46,17 @@ object ImageHandler {
                     .skipMemoryCache(true)
                     .submit()
 
-            val bitmapN = future.get()
-            F.compareBitmaps(bitmap, bitmapN) {
-                if (it)
-                    getBitmap(bitmap, context, callback)
-                else
-                    (context as AppCompatActivity).runOnUiThread { callback(bitmapN) }
+            try {
+                val bitmapN = future.get()
+                F.compareBitmaps(bitmap, bitmapN) {
+                    if (it)
+                        getBitmap(bitmap, context, callback)
+                    else
+                        (context as AppCompatActivity).runOnUiThread { callback(bitmapN) }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                callback(null)
             }
         }
     }
