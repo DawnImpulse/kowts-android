@@ -15,9 +15,17 @@
 package org.sourcei.kowts.ui
 
 import android.app.Application
+import androidx.preference.PreferenceManager
+import com.crashlytics.android.Crashlytics
+import com.google.firebase.analytics.FirebaseAnalytics
+import io.fabric.sdk.android.Fabric
 import io.paperdb.Paper
+import org.sourcei.kowts.BuildConfig
 import org.sourcei.kowts.utils.functions.F
+import org.sourcei.kowts.utils.reusables.ANALYTICS
+import org.sourcei.kowts.utils.reusables.CRASHLYTICS
 import org.sourcei.kowts.utils.reusables.Gradients
+import org.sourcei.kowts.utils.reusables.Prefs
 
 /**
  * @info -
@@ -32,8 +40,20 @@ class App : Application(){
 
     override fun onCreate() {
         super.onCreate()
+
+        Prefs = PreferenceManager.getDefaultSharedPreferences(this)
         Paper.init(this)
+        analytics()
 
         Gradients = F.readGradients(this)
+    }
+
+    // enabling crashlytics in release builds
+    private fun analytics() {
+        if (!BuildConfig.DEBUG) {
+            if (Prefs.getBoolean(CRASHLYTICS, true))
+                Fabric.with(this, Crashlytics())
+            FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(Prefs.getBoolean(ANALYTICS, true))
+        }
     }
 }

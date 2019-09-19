@@ -30,6 +30,8 @@ val DEFAULT_DOWNLOAD_PATH = "${Environment.getExternalStorageDirectory().path}/K
 
 const val X_API_KEY = "x-api-key"
 const val QUOTES = "quotes"
+const val CRASHLYTICS = "crashlytics"
+const val ANALYTICS = "analytics"
 
 const val ALIGN_LEFT = 0
 const val ALIGN_CENTER = 1

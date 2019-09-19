@@ -14,6 +14,7 @@
  **/
 package org.sourcei.kowts.utils.reusables
 
+import android.content.SharedPreferences
 import org.sourcei.kowts.utils.pojo.ObjectGradient
 
 /**
@@ -25,6 +26,9 @@ import org.sourcei.kowts.utils.pojo.ObjectGradient
  * @note Created on 2019-09-07 by Saksham
  * @note Updates :
  */
+
 val Paper by lazy { io.paperdb.Paper.book() }
 val Angles = listOf(0, 45, 90, 135, 180, 225, 270, 315)
+
 lateinit var Gradients: List<ObjectGradient>
+lateinit var Prefs: SharedPreferences
