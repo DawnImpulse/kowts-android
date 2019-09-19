@@ -42,15 +42,24 @@ OR PERFORMANCE OF THIS SOFTWARE.
         android:layout_height="48dp"
         android:layout_marginTop="16dp">
 
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:src="@drawable/ic_logo" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="16dp"
+            android:layout_toRightOf="@id/logo"
             android:letterSpacing="0.2"
             android:text="KOWTS"
             android:textColor="@color/white"
-            android:textSize="28sp" />
+            android:textSize="26sp" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="30dp"
@@ -209,8 +218,8 @@ OR PERFORMANCE OF THIS SOFTWARE.
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/actions"
-        android:visibility="gone"
-        android:layout_marginBottom="48dp">
+        android:layout_marginBottom="48dp"
+        android:visibility="gone">
 
         <!--Quote Gradient-->
         <FrameLayout

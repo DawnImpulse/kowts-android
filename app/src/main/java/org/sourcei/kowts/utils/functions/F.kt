@@ -57,6 +57,7 @@ import kotlin.random.Random
  * Saksham - 2019 09 11 - master - generate quote bitmap for storage
  * Saksham - 2019 09 13 - master - generate quote alignment
  * Saksham - 2019 09 18 - master - shortid & gradients
+ * Saksham - 2019 09 19 - master - add icon to generated image
  */
 object F {
 
@@ -161,13 +162,14 @@ object F {
 
     // generate quote bitmap
     fun generateBitmap(context: Context, quoteObject: ObjectQuote): Bitmap {
-        val layout = LayoutInflater.from(context).inflate(org.sourcei.kowts.R.layout.inflator_quote_empty, null)
+        val layout = LayoutInflater.from(context).inflate(R.layout.inflator_quote_empty, null)
         val card = layout.card
         val quote = layout.quote
         val authorText = layout.author
         val image = layout.image
         val gradient = layout.gradient
         val authorLayout = layout.authorLayout
+        val logo = layout.logo
 
         // set values
         image.setImageBitmap(quoteObject.image)
@@ -186,10 +188,8 @@ object F {
 
         // new params
         val paramsNQ = RelativeLayout.LayoutParams(x, 3 * y / 4)
-        val paramsNA = RelativeLayout.LayoutParams(
-                authorLayout.layoutParams.width,
-                authorLayout.layoutParams.height
-        )
+        val paramsNA = RelativeLayout.LayoutParams(authorLayout.layoutParams.width, authorLayout.layoutParams.height)
+        val paramsL = RelativeLayout.LayoutParams(dpToPx(48, context), dpToPx(48, context))
 
         // alignment quote
         quote.gravity = when (quoteObject.quoteAlign) {
@@ -205,13 +205,22 @@ object F {
             2 -> paramsNA.addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
         }
 
+        // align logo
+        when (quoteObject.authorAlign) {
+            0, 1 -> paramsL.addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
+            2 -> paramsL.addRule(RelativeLayout.ALIGN_PARENT_LEFT)
+        }
+
         // set new params
         paramsNQ.setMargins(margin)
+        paramsL.setMargins(margin, 0, margin, margin)
         paramsNA.setMargins(margin, 0, margin, margin)
-        paramsNA.addRule(RelativeLayout.BELOW, org.sourcei.kowts.R.id.quote)
+        paramsNA.addRule(RelativeLayout.BELOW, R.id.quote)
+        paramsL.addRule(RelativeLayout.BELOW, R.id.quote)
 
         quote.layoutParams = paramsNQ
         authorLayout.layoutParams = paramsNA
+        logo.layoutParams = paramsL
 
         // set gradients
         gradient.setGradient(quoteObject.gradient, 0, quoteObject.angle)
