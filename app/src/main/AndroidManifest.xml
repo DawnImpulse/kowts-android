@@ -18,6 +18,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
 
+        <!--Main-->
         <activity
             android:name=".ui.activities.MainActivity"
             android:screenOrientation="portrait"
@@ -27,5 +28,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!--Settings-->
+        <activity
+            android:name=".ui.activities.SettingsActivity"
+            android:theme="@style/AppTheme.Fullscreen" />
+
     </application>
 </manifest>

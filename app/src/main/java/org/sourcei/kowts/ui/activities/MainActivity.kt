@@ -76,6 +76,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
         quoteAlign.setOnClickListener(this)
         authorAlign.setOnClickListener(this)
         angle.setOnClickListener(this)
+        settings.setOnClickListener(this)
 
         // long click
         refresh.setOnLongClickListener(this)
@@ -180,6 +181,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
                     }
                 }
             }
+
+            // settings
+            settings.id -> openActivity(SettingsActivity::class.java)
 
         }
     }

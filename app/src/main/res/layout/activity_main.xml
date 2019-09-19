@@ -62,6 +62,7 @@ OR PERFORMANCE OF THIS SOFTWARE.
             android:textSize="26sp" />
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/settings"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignParentRight="true"

@@ -45,7 +45,7 @@
 
             <intent
                 android:action="android.intent.action.VIEW"
-                android:data="https://calette.sourcei.org/libraries" />
+                android:data="https://kowts.sourcei.org/libraries" />
         </Preference>
 
         <!--Icons-->
@@ -140,7 +140,7 @@
 
             <intent
                 android:action="android.intent.action.VIEW"
-                android:data="https://calette.sourcei.org/privacy" />
+                android:data="https://kowts.sourcei.org/privacy" />
         </Preference>
 
         <!--Tnc-->
@@ -155,7 +155,7 @@
 
             <intent
                 android:action="android.intent.action.VIEW"
-                android:data="https://calette.sourcei.org/tnc" />
+                android:data="https://kowts.sourcei.org/tnc" />
         </Preference>
 
         <!--Contact-->
@@ -176,7 +176,7 @@
                     android:value="What can I help you with?" />
                 <extra
                     android:name="android.intent.extra.SUBJECT"
-                    android:value="Bug/Feedback for Calette v1" />
+                    android:value="Bug/Feedback for Kowts v1" />
             </intent>
 
         </Preference>
