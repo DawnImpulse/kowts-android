@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!--Services-->
+    <PreferenceCategory
+        android:title="Services"
+        app:iconSpaceReserved="false">
+
+        <!--Crashlytics-->
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="crashlytics"
+            android:summary="@string/crashlytics"
+            android:title="Crashlytics" />
+
+        <!--Analytics-->
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="analytics"
+            android:summary="@string/analytics"
+            android:title="Analytics" />
+    </PreferenceCategory>
+
+    <!--License-->
+    <PreferenceCategory
+        android:title="License"
+        app:iconSpaceReserved="false">
+
+        <!--Info-->
+        <Preference
+            android:icon="@drawable/vd_lib"
+            android:key="terms"
+            android:selectable="false"
+            android:summary="Various libraries &amp; icons used in this application with their license &amp; source links"
+            app:allowDividerAbove="false"
+            app:allowDividerBelow="false" />
+
+        <!--Libraries-->
+        <Preference
+            android:selectable="true"
+            android:summary="License for open source libraries used"
+            android:title="Libraries"
+            app:allowDividerAbove="false">
+
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://calette.sourcei.org/libraries" />
+        </Preference>
+
+        <!--Icons-->
+        <Preference
+            android:selectable="true"
+            android:summary="The application uses icons provided by open source community materialdesignicons.com"
+            android:title="Icons"
+            app:allowDividerAbove="false">
+
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://materialdesignicons.com" />
+
+        </Preference>
+
+    </PreferenceCategory>
+
+    <!--Developer-->
+    <PreferenceCategory
+        android:title="Developer"
+        app:iconSpaceReserved="false">
+
+        <!--Me-->
+        <Preference
+            android:icon="@drawable/vd_account"
+            android:summary="Hii, I'm Saksham a Full Stack &amp; DevOps Engineer / Graphics Designer with expertise in Nodejs, Android, Server Operations &amp; designing mockups. Love to contribute to open source and hope you leave a good feedback if you love this application. Thanks"
+            android:title="Saksham Khurana" />
+
+        <!--Github-->
+        <Preference
+            android:icon="@drawable/vd_github"
+            android:selectable="true"
+            android:summary="View my open sourced projects"
+            android:title="Github">
+
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://github.com/dawnimpulse" />
+        </Preference>
+
+        <!--Twitter-->
+        <Preference
+            android:icon="@drawable/vd_twitter"
+            android:selectable="true"
+            android:summary="Follow me / Get in touch"
+            android:title="Twitter">
+
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://twitter.com/dawnimpulse" />
+        </Preference>
+
+        <!--Play Store-->
+        <Preference
+            android:icon="@drawable/vd_play"
+            android:selectable="true"
+            android:summary="View other apps"
+            android:title="Play Store">
+
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://play.google.com/store/apps/dev?id=8265907307839036400" />
+        </Preference>
+
+        <!--Rate on Play-->
+        <Preference
+            android:icon="@drawable/vd_star_face"
+            android:selectable="true"
+            android:title="Give the application a positive feedback on play store">
+
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://play.google.com/store/apps/details?id=org.sourcei.calette" />
+        </Preference>
+
+    </PreferenceCategory>
+
+    <!--Help-->
+    <PreferenceCategory
+        android:title="Help"
+        app:iconSpaceReserved="false">
+
+        <!--Privacy-->
+        <Preference
+            android:icon="@drawable/vd_privacy"
+            android:key="privacy"
+            android:selectable="true"
+            android:summary="Review the app privacy policy"
+            android:title="Privacy"
+            app:allowDividerAbove="false"
+            app:allowDividerBelow="false">
+
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://calette.sourcei.org/privacy" />
+        </Preference>
+
+        <!--Tnc-->
+        <Preference
+            android:icon="@drawable/vd_terms"
+            android:key="terms"
+            android:selectable="true"
+            android:summary="Terms for app usage"
+            android:title="Terms &amp; Conditions"
+            app:allowDividerAbove="false"
+            app:allowDividerBelow="false">
+
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://calette.sourcei.org/tnc" />
+        </Preference>
+
+        <!--Contact-->
+        <Preference
+            android:icon="@drawable/vd_agent"
+            android:key="contact"
+            android:selectable="true"
+            android:summary="For any issue / suggestion send us a mail on dawnimpulse@gmail.com"
+            android:title="Contact"
+            app:allowDividerAbove="false"
+            app:allowDividerBelow="false">
+
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="mailto:dawnimpulse@gmail.com">
+                <extra
+                    android:name="android.intent.extra.TEXT"
+                    android:value="What can I help you with?" />
+                <extra
+                    android:name="android.intent.extra.SUBJECT"
+                    android:value="Bug/Feedback for Calette v1" />
+            </intent>
+
+        </Preference>
+
+        <!--Version-->
+        <Preference
+            android:key="version"
+            android:selectable="false"
+            android:title="Application Version"
+            app:allowDividerAbove="false"
+            app:allowDividerBelow="false" />
+    </PreferenceCategory>
+</PreferenceScreen>
