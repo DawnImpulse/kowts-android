@@ -17,6 +17,7 @@ package org.sourcei.kowts.utils.handler
 import android.content.Context
 import android.graphics.Bitmap
 import android.media.MediaScannerConnection
+import com.crashlytics.android.Crashlytics
 import org.sourcei.kowts.utils.functions.logd
 import java.io.File
 import java.io.FileOutputStream
@@ -45,6 +46,7 @@ object StorageHandler {
             // make available for media scanner
             MediaScannerConnection.scanFile(context, arrayOf(file.toString()), arrayOf("image/jpeg"), null)
         } catch (e: Exception) {
+            Crashlytics.logException(e)
             e.printStackTrace()
         }
     }

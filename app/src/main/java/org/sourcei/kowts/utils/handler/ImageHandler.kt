@@ -56,7 +56,7 @@ object ImageHandler {
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
-                callback(null)
+                (context as AppCompatActivity).runOnUiThread { callback(null) }
             }
         }
     }

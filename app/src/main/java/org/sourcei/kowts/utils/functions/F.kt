@@ -27,6 +27,7 @@ import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.toColorInt
 import androidx.core.view.setMargins
+import com.crashlytics.android.Crashlytics
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.inflator_quote_empty.view.*
@@ -65,7 +66,7 @@ object F {
     private fun getBitmapFromView(view: View): Bitmap {
 
         val bitmap =
-                Bitmap.createBitmap(view.measuredWidth, view.measuredHeight, Bitmap.Config.ARGB_8888)
+            Bitmap.createBitmap(view.measuredWidth, view.measuredHeight, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
         view.layout(0, 0, view.measuredWidth, view.measuredHeight)
         view.draw(canvas)
@@ -75,7 +76,7 @@ object F {
     // Generating random color
     private fun randomColor(): String {
         val chars =
-                listOf("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F")
+            listOf("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F")
         var color = "#"
         for (i in 1..6) {
             color += chars[Math.floor(Math.random() * chars.size).toInt()]
@@ -85,18 +86,14 @@ object F {
 
     // Generate random gradient
     fun randomGradient(): List<Int> {
-        /*val count = 2
-        val angle = (0..180).random()
-        val colors = mutableListOf<Int>()
 
-        for (i in 1..count) {
-            colors.add(randomColor().toColorInt())
+        return try {
+            Gradients.random().colors.map { it.toColorInt() }
+        } catch (e: Exception) {
+            Crashlytics.logException(e)
+            e.printStackTrace()
+            randomGradient()
         }
-
-
-        return colors*/
-
-        return Gradients.random().colors.map { it.toColorInt() }
     }
 
     // convert dp - px
@@ -124,7 +121,7 @@ object F {
                 try {
                     callback(b1.sameAs(b2)) // callback with compare
                 } catch (e: Exception) {
-                    //Crashlytics.logException(e)
+                    Crashlytics.logException(e)
                     e.printStackTrace()
                     callback(false)
                 }
@@ -188,7 +185,10 @@ object F {
 
         // new params
         val paramsNQ = RelativeLayout.LayoutParams(x, 3 * y / 4)
-        val paramsNA = RelativeLayout.LayoutParams(authorLayout.layoutParams.width, authorLayout.layoutParams.height)
+        val paramsNA = RelativeLayout.LayoutParams(
+            authorLayout.layoutParams.width,
+            authorLayout.layoutParams.height
+        )
         val paramsL = RelativeLayout.LayoutParams(dpToPx(48, context), dpToPx(48, context))
 
         // alignment quote
@@ -228,8 +228,8 @@ object F {
 
         // prepare for export
         layout.measure(
-                View.MeasureSpec.makeMeasureSpec(x, View.MeasureSpec.EXACTLY),
-                View.MeasureSpec.makeMeasureSpec(y, View.MeasureSpec.EXACTLY)
+            View.MeasureSpec.makeMeasureSpec(x, View.MeasureSpec.EXACTLY),
+            View.MeasureSpec.makeMeasureSpec(y, View.MeasureSpec.EXACTLY)
         )
         layout.layout(0, 0, layout.measuredWidth, layout.measuredHeight)
 
@@ -240,16 +240,20 @@ object F {
     fun shortid(): String {
         val charPool: List<Char> = ('a'..'z') + ('A'..'Z') + ('0'..'9')
         return (1..10)
-                .map { Random.nextInt(0, charPool.size) }
-                .map(charPool::get)
-                .joinToString("")
+            .map { Random.nextInt(0, charPool.size) }
+            .map(charPool::get)
+            .joinToString("")
     }
 
     // read gradients
     fun readGradients(context: Context): List<ObjectGradient> {
-        val string = context.resources.openRawResource(R.raw.gradients).bufferedReader().use { it.readText() }
+        val string = context.resources.openRawResource(R.raw.gradients).bufferedReader()
+            .use { it.readText() }
         val json = JSONArray(string)
 
-        return Gson().fromJson<List<ObjectGradient>>(json.toString(), object : TypeToken<List<ObjectGradient>>() {}.type)!!
+        return Gson().fromJson<List<ObjectGradient>>(
+            json.toString(),
+            object : TypeToken<List<ObjectGradient>>() {}.type
+        )!!
     }
 }
